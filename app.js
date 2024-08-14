@@ -8,16 +8,11 @@ import { VerifyDiscordRequest } from './utils.js';
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { transformEarthquakeData } from './transfer.js';
 
-
-
-client.login(process.env.TOKEN);
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-
-
+// 이 함수에서 지진 정보를 업데이트하고 메시지를 Discord로 전송합니다.
 async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
@@ -28,7 +23,7 @@ async function handleEarthquakeUpdate() {
   }
 }
 
-
+// 주기적으로 handleEarthquakeUpdate 함수를 호출
 setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', async function (req, res) {
@@ -40,7 +35,7 @@ app.post('/interactions', async function (req, res) {
 
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
-
+    let data_system_1=0;
     let description = '';
     let color_x;
     let title = '';
@@ -51,49 +46,65 @@ app.post('/interactions', async function (req, res) {
     let same= 0;
 
     try {
+      // Assuming transformEarthquakeData is called to fetch the latest data
       const transformedData = await transformEarthquakeData();
       console.log('Current data_system value:', data_system);
-
-      if (data_system === '2') {
+     if (data_system_1 === '2') {
+        data_system_1=data_system;
+        same= 0;
+      } else if (data_system_1 === '3') {
+        data_system_1=data_system;
+        same= 0;
+      } else if (data_system_1 === '5') {
+        data_system_1=data_system;
+        same= 0;
+      } else if (data_system_1 === '11') {
+        data_system_1=data_system;
+        same= 0;
+      } else if (data_system_1 === '12') {
+        data_system_1=data_system;
+        same= 0;
+      } else if (data_system_1 === '13') {
+        data_system_1=data_system;
+        same= 0;
+      } else if (data_system_1 === '14') {
+        data_system_1=data_system;
+        same= 0;
+      } else {
+        same= 1;
+      }
+      if (data_system_1 === '2') {
         title = '[국외지진정보]';
         description = '국외 지진정보가 발표되었습니다. 해당지역에서는 주의하시기 바랍니다.';
         color_x = 0xfd2b2b;
-        same = 0;
-      } else if (data_system === '3') {
+      } else if (data_system_1 === '3') {
         title = '[국내지진정보]';
         description = '국내 지진정보가 발표되었습니다. 해당지역에서는 강한 흔들림에 주의하시기 바랍니다.';
         color_x = 0xece632;
-        same = 0;
-      } else if (data_system === '5') {
+      } else if (data_system_1 === '5') {
         title = '[국내지진정보(재통보)]';
         description = '국내 지진정보(재통보)가 발표되었습니다. 확인 후 주의하시기 바랍니다.';
         color_x = 0xece632;
-        same = 0;
-      } else if (data_system === '11') {
+      } else if (data_system_1 === '11') {
         title = '[국내지진조기경보]';
         description = '국내 지진조기경보가 발표되었습니다. 해당지역에서는 강한 흔들림에 주의하시기 바랍니다. 본 정보는 속도가 가장 빠른 P파 만을 이용한 정보 입니다.';
         color_x = 0xfd2b2b;
-        same = 0;
-      } else if (data_system === '12') {
+      } else if (data_system_1 === '12') {
         title = '[국외지진조기경보]';
         description = '국외 지진조기경보가 발표되었습니다. 주의하시기 바랍니다.';
         color_x = 0xfd2b2b;
-        same = 0;
-      } else if (data_system === '13') {
+      } else if (data_system_1 === '13') {
         title = '[조기경보 정밀분석]';
         description = '조기경보 정밀분석 정보입니다. 지진 발생 가능성에 유의하세요.';
         color_x = 0xece632;
-        same = 0;
-      } else if (data_system === '14') {
+      } else if (data_system_1 === '14') {
         title = '[조기경보 조기분석]';
         description = '지진속보(조기분석) 정보입니다. 최신 정보를 확인하세요.';
         color_x = 0xece632;
-        same = 0;
       } else {
         title = '[현재발생지진없음]';
         description = '현재 지진 정보가 없습니다.';
         color_x = 0x00ff00;
-        same = 1;
         return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -122,7 +133,7 @@ app.post('/interactions', async function (req, res) {
       description = '지진 정보 처리 중 오류가 발생했습니다.';
       color_x = 0xff0000; // 빨간색
     }
-  if(same===0){
+  if(data_system_1 != 0){
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
