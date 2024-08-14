@@ -9,7 +9,7 @@ import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { transformEarthquakeData } from './transfer.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4040;
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
 // 이 함수에서 지진 정보를 업데이트하고 메시지를 Discord로 전송합니다.
