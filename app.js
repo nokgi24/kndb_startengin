@@ -8,9 +8,14 @@ import { VerifyDiscordRequest } from './utils.js';
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { transformEarthquakeData } from './transfer.js';
 
+
+
+client.login(process.env.TOKEN);
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
+
 
 
 async function handleEarthquakeUpdate() {
