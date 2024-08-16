@@ -1,0 +1,12 @@
+t=2024-08-16T01:27:56+0000 lvl=info msg="no configuration paths supplied"
+t=2024-08-16T01:27:56+0000 lvl=info msg="using configuration at default config path" path=/home/susu3100/.config/ngrok/ngrok.yml
+t=2024-08-16T01:27:56+0000 lvl=info msg="open config file" path=/home/susu3100/.config/ngrok/ngrok.yml err=nil
+t=2024-08-16T01:27:56+0000 lvl=warn msg="can't bind default web address, trying alternatives" obj=web addr=127.0.0.1:4040
+t=2024-08-16T01:27:56+0000 lvl=info msg="starting web service" obj=web addr=127.0.0.1:4041 allow_hosts=[]
+t=2024-08-16T01:27:56+0000 lvl=info msg="client session established" obj=tunnels.session
+t=2024-08-16T01:27:56+0000 lvl=info msg="tunnel session started" obj=tunnels.session
+t=2024-08-16T01:27:56+0000 lvl=info msg="started tunnel" obj=tunnels name=command_line addr=http://localhost:4040 url=https://4dcb-34-19-1-253.ngrok-free.app
+t=2024-08-16T01:28:18+0000 lvl=info msg="join connections" obj=join id=237bd27160ae l=127.0.0.1:4040 r=35.196.132.85:39977
+t=2024-08-16T01:28:23+0000 lvl=info msg="Got quit command" obj=consoleui
+t=2024-08-16T01:28:23+0000 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+t=2024-08-16T01:28:23+0000 lvl=info msg="session closing" obj=tunnels.session err=nil
