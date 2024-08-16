@@ -23,9 +23,9 @@ const Realtest_COMMAND = {
 };
 const ping_command = {
   name: 'ping',
-  description: 'Simulate a real situation',
+  description: 'ping',
   type: 1,
 };
-const ALL_COMMANDS = [common_COMMAND , Realtest_COMMAND,ping_command];
+const ALL_COMMANDS = [common_COMMAND , Realtest_COMMAND, ping_command];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
