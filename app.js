@@ -7,9 +7,22 @@ import {
 import { VerifyDiscordRequest } from './utils.js';
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { transformEarthquakeData } from './transfer.js';
+import { Client, Events, GatewayIntentBits } from 'discord.js'; // discord.js 추가
 
 const app = express();
 const PORT = process.env.PORT || 4040;
+
+// Discord client 설정
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+// When the client is ready, run this code (only once).
+client.once(Events.ClientReady, readyClient => {
+  console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+});
+
+// Log in to Discord with your client's token
+client.login(process.env.DISCORD_TOKEN); // config.json 대신 환경변수에서 토큰을 가져옴
+
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
 app.get('/', (req, res) => {
@@ -39,7 +52,7 @@ app.post('/interactions', async function (req, res) {
 
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
-    let data_system_1=0;
+    let data_system_1 = 0;
     let description = '';
     let color_x;
     let title = '';
@@ -47,36 +60,38 @@ app.post('/interactions', async function (req, res) {
     let inT = '';
     let dep = '';
     let tmFc = '';
-    let same= 0;
+    let same = 0;
 
     try {
       // Assuming transformEarthquakeData is called to fetch the latest data
       const transformedData = await transformEarthquakeData();
       console.log('Current data_system value:', data_system);
-     if (data_system_1 === '2') {
-        data_system_1=data_system;
-        same= 0;
+
+      if (data_system_1 === '2') {
+        data_system_1 = data_system;
+        same = 0;
       } else if (data_system_1 === '3') {
-        data_system_1=data_system;
-        same= 0;
+        data_system_1 = data_system;
+        same = 0;
       } else if (data_system_1 === '5') {
-        data_system_1=data_system;
-        same= 0;
+        data_system_1 = data_system;
+        same = 0;
       } else if (data_system_1 === '11') {
-        data_system_1=data_system;
-        same= 0;
+        data_system_1 = data_system;
+        same = 0;
       } else if (data_system_1 === '12') {
-        data_system_1=data_system;
-        same= 0;
+        data_system_1 = data_system;
+        same = 0;
       } else if (data_system_1 === '13') {
-        data_system_1=data_system;
-        same= 0;
+        data_system_1 = data_system;
+        same = 0;
       } else if (data_system_1 === '14') {
-        data_system_1=data_system;
-        same= 0;
+        data_system_1 = data_system;
+        same = 0;
       } else {
-        same= 1;
+        same = 1;
       }
+
       if (data_system_1 === '2') {
         title = '[국외지진정보]';
         description = '국외 지진정보가 발표되었습니다. 해당지역에서는 주의하시기 바랍니다.';
@@ -110,22 +125,22 @@ app.post('/interactions', async function (req, res) {
         description = '현재 지진 정보가 없습니다.';
         color_x = 0x00ff00;
         return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: '',
-          embeds: [
-            {
-              title: title,
-              description: description,
-              timestamp: new Date(),
-              color: color_x,
-            }
-          ]
-        }
-      });
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: '',
+            embeds: [
+              {
+                title: title,
+                description: description,
+                timestamp: new Date(),
+                color: color_x,
+              }
+            ]
+          }
+        });
       }
 
-      if (same===0) {
+      if (same === 0) {
         mt = transformedData[0].mt || '정보 없음';
         inT = transformedData[0].inT || '정보 없음';
         dep = transformedData[0].dep || '정보 없음';
@@ -137,7 +152,8 @@ app.post('/interactions', async function (req, res) {
       description = '지진 정보 처리 중 오류가 발생했습니다.';
       color_x = 0xff0000; // 빨간색
     }
-  if(data_system_1 != 0){
+
+    if (data_system_1 != 0) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -161,14 +177,14 @@ app.post('/interactions', async function (req, res) {
           ]
         }
       });
-  }
-} else {
-    return res.send({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: '알 수 없는 명령어입니다.',
-      }
-    });
+    } else {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: '알 수 없는 명령어입니다.',
+        }
+      });
+    }
   }
 });
 
