@@ -56,6 +56,7 @@ app.post('/interactions', async function (req, res) {
   });
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
+	  
     let data_system_1 = 0;
     let description = '';
     let color_x;
