@@ -69,25 +69,25 @@ app.post('/interactions', async function (req, res) {
       const transformedData = await transformEarthquakeData();
       console.log('Current data_system value:', data_system);
 
-      if (data_system_1 === '2') {
+      if (data_system === '2') {
         data_system_1 = data_system;
         same = 0;
-      } else if (data_system_1 === '3') {
+      } else if (data_system === '3') {
         data_system_1 = data_system;
         same = 0;
-      } else if (data_system_1 === '5') {
+      } else if (data_system === '5') {
         data_system_1 = data_system;
         same = 0;
-      } else if (data_system_1 === '11') {
+      } else if (data_system === '11') {
         data_system_1 = data_system;
         same = 0;
-      } else if (data_system_1 === '12') {
+      } else if (data_system === '12') {
         data_system_1 = data_system;
         same = 0;
-      } else if (data_system_1 === '13') {
+      } else if (data_system === '13') {
         data_system_1 = data_system;
         same = 0;
-      } else if (data_system_1 === '14') {
+      } else if (data_system === '14') {
         data_system_1 = data_system;
         same = 0;
       } else {
