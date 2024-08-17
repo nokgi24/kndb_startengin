@@ -9,6 +9,21 @@ if (!process.env.DISCORD_TOKEN) {
   throw new Error('Missing DISCORD_TOKEN in environment variables');
 }
 
+
+export function VerifyDiscordRequest(clientKey) {
+  return function (req, res, buf, encoding) {
+    const signature = req.get('X-Signature-Ed25519');
+    const timestamp = req.get('X-Signature-Timestamp');
+
+    const isValidRequest = verifyKey(buf, signature, timestamp, clientKey);
+    if (!isValidRequest) {
+      console.warn('Invalid Discord request signature');
+      res.status(401).send('Invalid request signature');
+      throw new Error('Bad request signature');
+    }
+  };
+}
+
 // Discord 요청 검증 함수
 export async function DiscordRequest(endpoint, options) {
   const url = `${API_BASE_URL}${endpoint}`;
