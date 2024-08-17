@@ -4,7 +4,7 @@ import {
   InteractionType,
   InteractionResponseType,
 } from 'discord-interactions';
-import { VerifyDiscordRequest } from './Authentication.js';  // 인증 로직을 Authentication.js에서 가져옴
+import { verifyRequest } from './Authentication.js';  // 인증 미들웨어
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { transformEarthquakeData } from './transfer.js';
 import { Client, Events, GatewayIntentBits } from 'discord.js'; // discord.js 추가
@@ -15,33 +15,32 @@ const PORT = process.env.PORT || 4040;
 // Discord client 설정
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-// When the client is ready, run this code (only once).
 client.once(Events.ClientReady, readyClient => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
 // Log in to Discord with your client's token
+client.login(process.env.DISCORD_TOKEN);
 
-app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
+app.use(express.json());
+app.use(verifyRequest);  // 인증 미들웨어 적용
 
 app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-client.login(process.env.DISCORD_TOKEN); // 환경변수에서 토큰을 가져옴
-
-// 이 함수에서 지진 정보를 업데이트하고 메시지를 Discord로 전송합니다.
+// 지진 정보 업데이트 및 Discord로 메시지 전송
 async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
-    await earthquake_emergency(); // 지진 정보 업데이트
+    await earthquake_emergency();
     console.log('Update complete.');
   } catch (error) {
     console.error('Error updating earthquake information:', error);
   }
 }
 
-// 주기적으로 handleEarthquakeUpdate 함수를 호출
+// 주기적으로 지진 정보 업데이트
 setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', async function (req, res) {
