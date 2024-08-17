@@ -4,7 +4,7 @@ import {
   InteractionType,
   InteractionResponseType,
 } from 'discord-interactions';
-import { VerifyDiscordRequest } from './utils.js';
+import { VerifyDiscordRequest } from './Authentication.js';  // 인증 로직을 Authentication.js에서 가져옴
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { transformEarthquakeData } from './transfer.js';
 import { Client, Events, GatewayIntentBits } from 'discord.js'; // discord.js 추가
@@ -28,13 +28,9 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-client.login(process.env.DISCORD_TOKEN); // config.json 대신 환경변수에서 토큰을 가져옴
+client.login(process.env.DISCORD_TOKEN); // 환경변수에서 토큰을 가져옴
 
 // 이 함수에서 지진 정보를 업데이트하고 메시지를 Discord로 전송합니다.
-process.on('unhandledRejection', error => {
-  console.error('Unhandled promise rejection:', error);
-});
-
 async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
@@ -55,9 +51,6 @@ app.post('/interactions', async function (req, res) {
     console.log("pong");
     return res.send({ type: InteractionResponseType.PONG });
   }
-  process.on('unhandledRejection', error => {
-	    console.error('Unhandled promise rejection:', error);
-  });
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
 	  
