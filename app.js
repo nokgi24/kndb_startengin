@@ -45,6 +45,7 @@ async function handleEarthquakeUpdate() {
 setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', async function (req, res) {
+  console.log('Received interaction:', req.body);
   const { type, data } = req.body;
   
   if (type === InteractionType.PING) {
