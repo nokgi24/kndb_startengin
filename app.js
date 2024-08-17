@@ -10,7 +10,7 @@ import { transformEarthquakeData } from './transfer.js';
 import { Client, Events, GatewayIntentBits } from 'discord.js'; // discord.js 추가
 
 const app = express();
-const PORT = process.env.PORT || 4040;
+const PORT = process.env.PORT || 4030;
 
 // Discord client 설정
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
