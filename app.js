@@ -46,12 +46,13 @@ setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', async function (req, res) {
   const { type, data } = req.body;
-
-
+  
   if (type === InteractionType.PING) {
     return res.send({ type: InteractionResponseType.PONG });
   }
-
+  process.on('unhandledRejection', error => {
+	    console.error('Unhandled promise rejection:', error);
+  });
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
     let data_system_1 = 0;
