@@ -2,7 +2,7 @@ import 'dotenv/config';
 import request from 'request';
 import convert from 'xml-js';
 
-const serviceKey = 'M32SirZ7RxVajtKade1bvVHMsgQauKkVdVVL3q9uRXfDg0Xs0GBqeBUQ554GA8LrS7F%2FLF1KrgKEGFb8rayaSA%3D%3D';
+const serviceKey = process.env.Services_KEY;
 
 
 function getPastTimeISOString(days) {
