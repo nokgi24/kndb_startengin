@@ -21,7 +21,6 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 // Log in to Discord with your client's token
-client.login(process.env.DISCORD_TOKEN); // config.json 대신 환경변수에서 토큰을 가져옴
 
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
@@ -45,6 +44,8 @@ setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', async function (req, res) {
   const { type, data } = req.body;
+  client.login(process.env.DISCORD_TOKEN); // config.json 대신 환경변수에서 토큰을 가져옴
+
 
   if (type === InteractionType.PING) {
     return res.send({ type: InteractionResponseType.PONG });
