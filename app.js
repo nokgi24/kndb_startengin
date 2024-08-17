@@ -23,11 +23,12 @@ client.once(Events.ClientReady, readyClient => {
 client.login(process.env.DISCORD_TOKEN);
 
 app.use(express.json());
-app.use(verifyRequest);  // 인증 미들웨어 적용
+app.use('/protected', verifyRequest);
 
 app.get('/', (req, res) => {
   res.send('Server is running');
 });
+
 
 // 지진 정보 업데이트 및 Discord로 메시지 전송
 async function handleEarthquakeUpdate() {
@@ -44,8 +45,9 @@ async function handleEarthquakeUpdate() {
 setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', async function (req, res) {
+  // 여기서는 verifyRequest 미들웨어를 적용하지 않음
   const { type, data } = req.body;
-  
+	
   if (type === InteractionType.PING) {
     console.log("pong");
     return res.send({ type: InteractionResponseType.PONG });
