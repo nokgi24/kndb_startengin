@@ -2,7 +2,7 @@ import 'dotenv/config';
 import fetch from 'node-fetch';
 import { verifyKey } from 'discord-interactions';
 
-const API_BASE_URL = 'https://discord.com/api/v10/';
+const API_BASE_URL = 'https://discord.com/api/v14/';
 
 // 환경 변수 유효성 검사
 if (!process.env.DISCORD_TOKEN) {
