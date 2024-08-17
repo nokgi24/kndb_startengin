@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 const API_BASE_URL = 'https://discord.com/api/v14/';
 
-// Discord 요청 함수
+// Discord API 요청 함수
 export async function DiscordRequest(endpoint, options) {
   const url = `${API_BASE_URL}${endpoint}`;
 
@@ -53,4 +53,5 @@ export function getRandomEmoji() {
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
 
