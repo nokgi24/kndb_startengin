@@ -27,30 +27,49 @@ export function VerifyDiscordRequest(clientKey) {
 // Discord API 요청 함수
 export async function DiscordRequest(endpoint, options) {
   const url = `${API_BASE_URL}${endpoint}`;
-  
+
   // Payload가 있는 경우 JSON 문자열로 변환
   if (options.body) options.body = JSON.stringify(options.body);
 
-  // node-fetch를 사용하여 요청 실행
-  const res = await fetch(url, {
-    headers: {
+  try {
+    // node-fetch를 사용하여 요청 실행
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'User-Agent': 'KNDB (https://github.com/nokgi24/KNDBbot, 1.0.0)',
+      },
+      ...options,
+    });
+
+    // 요청과 응답 로그
+    console.log(`Request URL: ${url}`);
+    console.log('Request Headers:', {
       Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
       'Content-Type': 'application/json; charset=UTF-8',
       'User-Agent': 'KNDB (https://github.com/nokgi24/KNDBbot, 1.0.0)',
-    },
-    ...options,
-  });
+    });
+    if (options.body) {
+      console.log('Request Body:', options.body);
+    }
 
-  // API 오류 처리
-  if (!res.ok) {
-    const data = await res.json();
-    console.error(`Discord API error: ${res.status} - ${data.message}`);
-    throw new Error(JSON.stringify(data));
+    // API 오류 처리
+    if (!res.ok) {
+      const data = await res.json();
+      console.error(`Discord API error: ${res.status} - ${data.message}`);
+      console.error('Error details:', data);
+      throw new Error(JSON.stringify(data));
+    }
+
+    // 응답 결과를 JSON으로 변환하여 반환
+    return await res.json();
+
+  } catch (error) {
+    // 네트워크 오류 또는 예외 발생 시 추가 로그 출력
+    console.error('Request failed:', error);
+    throw error;
   }
-
-  return res;
 }
-
 // 전역 명령어 설치 함수
 export async function InstallGlobalCommands(appId, commands) {
   const endpoint = `applications/${appId}/commands`;
