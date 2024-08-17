@@ -54,6 +54,8 @@ export async function getUserInfo(accessToken) {
 // 인증된 Discord 요청을 검증하는 미들웨어
 export function verifyRequest(req, res, next) {
   const authHeader = req.headers.authorization;
+  console.log('Authorization Header:', authHeader);
+  console.log('Expected:', `Bot ${DISCORD_TOKEN}`);
 
   if (!authHeader || authHeader !== `Bot ${DISCORD_TOKEN}`) {
     return res.status(401).send('Unauthorized');
@@ -61,5 +63,3 @@ export function verifyRequest(req, res, next) {
 
   next();
 }
-
-
