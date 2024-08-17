@@ -28,6 +28,8 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
+client.login(process.env.DISCORD_TOKEN); // config.json 대신 환경변수에서 토큰을 가져옴
+
 // 이 함수에서 지진 정보를 업데이트하고 메시지를 Discord로 전송합니다.
 async function handleEarthquakeUpdate() {
   try {
@@ -44,7 +46,6 @@ setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', async function (req, res) {
   const { type, data } = req.body;
-  client.login(process.env.DISCORD_TOKEN); // config.json 대신 환경변수에서 토큰을 가져옴
 
 
   if (type === InteractionType.PING) {
