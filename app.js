@@ -37,6 +37,7 @@ async function handleEarthquakeUpdate() {
     console.log('Updating earthquake information...');
     await earthquake_emergency();
     console.log('Update complete.');
+    console.log(data_system);
   } catch (error) {
     console.error('Error updating earthquake information:', error);
   }
