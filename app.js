@@ -39,6 +39,7 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
+app.use('/interactions', express.raw({ type: 'application/json' }));
 
 async function handleEarthquakeUpdate() {
   try {
