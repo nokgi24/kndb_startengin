@@ -92,6 +92,12 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
       // Assuming transformEarthquakeData is called to fetch the latest data
       const transformedData = await fetchEarthquakeData();
       console.log(transformedData);
+      mt = transformedData[0].mt || '정보 없음';
+      inT = transformedData[0].inT || '정보 없음';
+      dep = transformedData[0].dep || '정보 없음';
+      tmFc = transformedData[0].tmFc || '정보 없음';
+      loc = transformedData[0].loc || '정보없음';
+
 
       if (data_system_1 === '2') {
         title = '[국외지진정보]';
@@ -140,13 +146,6 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
           }
         });
       }
-     if (same === 0) {
-        mt = transformedData[0].mt || '정보 없음';
-        inT = transformedData[0].inT || '정보 없음';
-        dep = transformedData[0].dep || '정보 없음';
-        tmFc = transformedData[0].tmFc || '정보 없음';
-	loc = transformedData[0].loc || '정보없음';
-     }
     } catch (error) {
       console.error('Error processing earthquake data:', error);
       title = '[오류]';
