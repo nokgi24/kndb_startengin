@@ -18,7 +18,7 @@ function formatDateForAPI(date) {
 }
 
 export function fetchEarthquakeData() {
-    const numOfRows = 10;
+    const numOfRows = 1;
     const pageNo = 1;
     const currentTime = formatDateForAPI(new Date());
     const pastTime = formatDateForAPI(new Date(getPastTimeISOString(3))); 
@@ -68,7 +68,7 @@ export function fetchEarthquakeData() {
 
 
 fetchEarthquakeData().then(data => {
-    console.log('Fetched Data:', data);
+    
 }).catch(error => {
     console.error('Error:', error);
 });
