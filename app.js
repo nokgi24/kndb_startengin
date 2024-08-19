@@ -36,8 +36,32 @@ async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
     await earthquake_emergency();
-    console.log('Update complete.');
-    console.log(data_system);
+     if (data_system === '2') {
+        data_system_1 = data_system;
+        same = 0;
+      } else if (data_system === '3') {
+        data_system_1 = data_system;
+        same = 0;
+      } else if (data_system === '5') {
+        data_system_1 = data_system;
+        same = 0;
+      } else if (data_system === '11') {
+        data_system_1 = data_system;
+        same = 0;
+      } else if (data_system === '12') {
+        data_system_1 = data_system;
+        same = 0;
+      } else if (data_system === '13') {
+        data_system_1 = data_system;
+        same = 0;
+      } else if (data_system === '14') {
+        data_system_1 = data_system;
+        same = 0;
+      } else {
+        same = 1;
+      }
+    console.log("datasystem_1");
+    console.log(data_system_1);
   } catch (error) {
     console.error('Error updating earthquake information:', error);
   }
@@ -69,32 +93,6 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
       const transformedData = await transformEarthquakeData();
       console.log('Current data_system value:', data_system);
 
-      if (data_system === '2') {
-        data_system_1 = data_system;
-        same = 0;
-      } else if (data_system === '3') {
-        data_system_1 = data_system;
-        same = 0;
-      } else if (data_system === '5') {
-        data_system_1 = data_system;
-        same = 0;
-      } else if (data_system === '11') {
-        data_system_1 = data_system;
-        same = 0;
-      } else if (data_system === '12') {
-        data_system_1 = data_system;
-        same = 0;
-      } else if (data_system === '13') {
-        data_system_1 = data_system;
-        same = 0;
-      } else if (data_system === '14') {
-        data_system_1 = data_system;
-        same = 0;
-      } else {
-        same = 1;
-      }
-      console.log("datasystem_1");
-      console.log(data_system_1);
       if (data_system_1 === '2') {
         title = '[국외지진정보]';
         description = '국외 지진정보가 발표되었습니다. 해당지역에서는 주의하시기 바랍니다.';
