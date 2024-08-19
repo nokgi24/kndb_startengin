@@ -139,6 +139,7 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
           }
         });
       }
+    if(data_system === data_system_1){
         mt = transformedData[0].mt || '정보 없음';
         inT = transformedData[0].inT || '정보 없음';
         dep = transformedData[0].dep || '정보 없음';
