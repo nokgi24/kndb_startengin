@@ -78,27 +78,37 @@ async function handleEarthquakeUpdate() {
 
 setInterval(handleEarthquakeUpdate, 10000);
 
-app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
+app.post('/interactions', express.raw({ type: 'application/json' }), verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
   const { type, data } = req.body;
-	
+
   if (type === InteractionType.PING) {
-    console.log("pong");
+    console.log("Received PING");
     return res.send({ type: InteractionResponseType.PONG });
   }
+
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
-	  
+    let data_system_1 = '0'; // 예제용 초기화
+    let description = '';
+    let color_x;
+    let title = '';
+    let mt = '';
+    let inT = '';
+    let dep = '';
+    let tmFc = '';
+    let loc = '';
+
     try {
-      // Assuming transformEarthquakeData is called to fetch the latest data
       const transformedData = await fetchEarthquakeData();
-      
+
       mt = transformedData[0].mt || '정보 없음';
       inT = transformedData[0].inT || '정보 없음';
       dep = transformedData[0].dep || '정보 없음';
       tmFc = transformedData[0].tmFc || '정보 없음';
-      loc = transformedData[0].loc || '정보없음';
-      console.log(mt);
+      loc = transformedData[0].loc || '정보 없음';
+      console.log(`Received data: ${mt}, ${inT}, ${dep}, ${tmFc}, ${loc}`);
 
+      // 각 data_system_1 값에 따라 응답을 설정합니다.
       if (data_system_1 === '2') {
         title = '[국외지진정보]';
         description = '국외 지진정보가 발표되었습니다. 해당지역에서는 주의하시기 바랍니다.';
@@ -113,7 +123,7 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
         color_x = 0xece632;
       } else if (data_system_1 === '11') {
         title = '[국내지진조기경보]';
-        description = '국내 지진조기경보가 발표되었습니다. 해당지역에서는 강한 흔들림에 주의하시기 바랍니다. 본 정보는 속도가 가장 빠른 P파 만을 이용한 정보 입니다.';
+        description = '국내 지진조기경보가 발표되었습니다. 해당지역에서는 강한 흔들림에 주의하시기 바랍니다.';
         color_x = 0xfd2b2b;
       } else if (data_system_1 === '12') {
         title = '[국외지진조기경보]';
@@ -131,29 +141,16 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
         title = '[현재발생지진없음]';
         description = '현재 지진 정보가 없습니다.';
         color_x = 0x00ff00;
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: '',
-            embeds: [
-              {
-                title: title,
-                description: description,
-                timestamp: new Date(),
-                color: color_x,
-              }
-            ]
-          }
-        });
       }
+
     } catch (error) {
       console.error('Error processing earthquake data:', error);
       title = '[오류]';
       description = '지진 정보 처리 중 오류가 발생했습니다.';
-      color_x = 0xff0000; // 빨간색
+      color_x = 0xff0000;
     }
 
-    if (data_system_1 != 0) {
+    if (data_system_1 !== '0') {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -166,8 +163,8 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
                 { name: 'M', value: mt, inline: true },
                 { name: '최대 측정 진도', value: inT, inline: true },
                 { name: '깊이', value: dep, inline: true },
-                { name: '발표시각 ', value: tmFc, inline: true },
-	        { name: '위치 ', value: loc, inline: true }
+                { name: '발표시각', value: tmFc, inline: true },
+                { name: '위치', value: loc, inline: true }
               ],
               timestamp: new Date(),
               color: color_x,
@@ -186,6 +183,9 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
         }
       });
     }
+  } else {
+    console.error('Unsupported interaction type:', type);
+    return res.status(400).send({ error: 'Unsupported interaction type' });
   }
 });
 
