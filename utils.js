@@ -1,8 +1,7 @@
 import 'dotenv/config';
 import fetch from 'node-fetch';
 
-const API_BASE_URL = 'https://discord.com/api/v14/';
-
+const url = 'https://discord.com/api/v10/' + endpoint; 
 // Discord API 요청 함수
 export async function DiscordRequest(endpoint, options) {
   const url = `${API_BASE_URL}${endpoint}`;
