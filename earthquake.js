@@ -4,13 +4,11 @@ import convert from 'xml-js';
 
 const serviceKey = process.env.Services_KEY;
 
-
 function getPastTimeISOString(days) {
     const past = new Date();
     past.setDate(past.getDate() - days);
     return past.toISOString();
 }
-
 
 function formatDateForAPI(date) {
     const year = date.getFullYear();
@@ -40,13 +38,19 @@ export function fetchEarthquakeData() {
                     
                     const parsedData = JSON.parse(xmlToJson);
 
-                    const resultCode = parsedData.response?.header?.resultCode?._text;
-
-                    if (!parsedData.response?.body || !parsedData.response.body.items || !parsedData.response.body.items.item) {
-                        return resolve(null);
+                    // Check the structure of the parsedData to match the actual API response
+                    const resultCode = parsedData.response?.header?.resultCode;
+                    if (resultCode !== '00') {
+                        return reject(new Error(`API Error: ${resultCode}`));
                     }
 
-                    resolve(parsedData);
+                    // Make sure to check if items exist and are not empty
+                    const items = parsedData.response?.body?.items?.item;
+                    if (!items || items.length === 0) {
+                        return resolve([]);
+                    }
+
+                    resolve(items);
 
                 } catch (parseError) {
                     console.error(`Parse Error: ${parseError}`);
@@ -60,9 +64,9 @@ export function fetchEarthquakeData() {
     });
 }
 
-
 fetchEarthquakeData().then(data => {
     console.log('Fetched Data:', data);
 }).catch(error => {
     console.error('Error:', error);
 });
+
