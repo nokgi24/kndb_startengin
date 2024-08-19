@@ -2,8 +2,7 @@ import { fetchEarthquakeData } from './earthquake.js';
 import { transformEarthquakeData } from './transfer.js';
 
 let lastData = null; 
-let data_system = null; 
-
+let data_system = 0; 
 
 function isDataEqual(newData, oldData) {
     if (!oldData) return false; 
@@ -36,8 +35,5 @@ export async function earthquake_emergency() {
         return 0;
     }
 }
-
-
-
 
 export { data_system };
