@@ -19,7 +19,6 @@ export async function earthquake_emergency() {
         }
 
         const transformedData = transformEarthquakeData(rawData);
-        console.log(transformedData);
 
         if (isDataEqual(transformedData, lastData)) {
             data_system = 0;
@@ -29,6 +28,8 @@ export async function earthquake_emergency() {
         lastData = transformedData;
         if (transformedData.length > 0) {
             data_system = transformedData[0].fcTp;
+            console.log(transformedData[0].fcTp);
+
         }
         return 1;
     } catch (error) {
