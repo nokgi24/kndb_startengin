@@ -91,6 +91,7 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
     try {
       // Assuming transformEarthquakeData is called to fetch the latest data
       const transformedData = await fetchEarthquakeData();
+      console.log(transformedData);
 
       if (data_system_1 === '2') {
         title = '[국외지진정보]';
