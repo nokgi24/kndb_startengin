@@ -1,8 +1,8 @@
 
 import convert from 'xml-js'; 
 
-console.log('Raw Parsed Data:', parsedData);
 export function transformEarthquakeData(parsedData) {
+    console.log('Raw Parsed Data:', parsedData);
     if (!parsedData || !parsedData.response || !parsedData.response.body) {
         console.warn('Invalid data format:', parsedData);
         return [];
