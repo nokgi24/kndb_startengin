@@ -3,6 +3,7 @@ import express from 'express';
 import {
   InteractionType,
   InteractionResponseType,
+  verifyKeyMiddleware,
 } from 'discord-interactions';
 import { verifyRequest } from './Authentication.js';  // 인증 미들웨어
 import { earthquake_emergency, data_system } from './earthquake_return.js';
@@ -42,7 +43,7 @@ async function handleEarthquakeUpdate() {
 
 setInterval(handleEarthquakeUpdate, 10000);
 
-app.post('/interactions', async function (req, res) {
+app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
   const { type, data } = req.body;
 	
   if (type === InteractionType.PING) {
