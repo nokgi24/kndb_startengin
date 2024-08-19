@@ -15,7 +15,6 @@ export async function earthquake_emergency() {
         const rawData = await fetchEarthquakeData();
         
         if (!rawData) {
-            console.log('No earthquake data available.');
             data_system = 0;
             return 0;
         }
@@ -23,7 +22,6 @@ export async function earthquake_emergency() {
         const transformedData = transformEarthquakeData(rawData);
         
         if (isDataEqual(transformedData, lastData)) {
-            console.log('No new earthquake data to process.');
             data_system = 0;
             return 0;
         }
@@ -31,8 +29,6 @@ export async function earthquake_emergency() {
         lastData = transformedData;
         if (transformedData.length > 0) {
             data_system = transformedData[0].fcTp;
-            console.log('data_system:');
-            console.log(data_system);
         }
         return 1;
     } catch (error) {
