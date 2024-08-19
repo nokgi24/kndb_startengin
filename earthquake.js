@@ -40,9 +40,7 @@ export function fetchEarthquakeData() {
                     const xmlToJson = convert.xml2json(body, { compact: true, spaces: 4 });
                     const parsedData = JSON.parse(xmlToJson);
                     
-                    // Call the transform function to process the data
-                    const transformedData = transformEarthquakeData(parsedData);
-                    resolve(transformedData);
+                  
                 } catch (parseError) {
                     console.error(`Parse Error: ${parseError}`);
                     reject(parseError);
