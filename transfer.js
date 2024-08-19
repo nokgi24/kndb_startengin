@@ -6,10 +6,7 @@ export function transformEarthquakeData(parsedData) {
 
     const firstData = parsedData?.response?.body;
 
-    if (!firstData) {
-        console.warn('Invalid data format:', parsedData);
-        return [];
-    }
+   
     
     // 데이터 구조 수정
     const responseBody = firstData;
