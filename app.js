@@ -88,16 +88,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
-    let data_system_1 = '0'; // 예제용 초기화
-    let description = '';
-    let color_x;
-    let title = '';
-    let mt = '';
-    let inT = '';
-    let dep = '';
-    let tmFc = '';
-    let loc = '';
-
+   
     try {
       const transformedData = await fetchEarthquakeData();
 
