@@ -28,7 +28,7 @@ export function fetchEarthquakeData() {
     return new Promise((resolve, reject) => {
         request.get(requestUrl, (err, res, body) => {
             if (err) {
-                console.log(`Request Error: ${err}`);
+                console.log(`Request error: ${err}`);
                 return reject(err);
             }
 
@@ -38,22 +38,11 @@ export function fetchEarthquakeData() {
             if (res.statusCode === 200) {
                 try {
                     const xmlToJson = convert.xml2json(body, { compact: true, spaces: 4 });
-                    
                     const parsedData = JSON.parse(xmlToJson);
                     
-                    const resultCode = parsedData.response?.header?.resultCode?._text;
-                    if (resultCode !== '00') {
-                        return reject(new Error(`API Error: ${resultCode}`));
-                    }
-
-                    const items = parsedData.response?.body?.items?.item;
-                    if (!items || items.length === 0) {
-                        console.log('No earthquake data available.');
-                        return resolve([]);
-                    }
-
-                    resolve(items);
-
+                    // Call the transform function to process the data
+                    const transformedData = transformEarthquakeData(parsedData);
+                    resolve(transformedData);
                 } catch (parseError) {
                     console.error(`Parse Error: ${parseError}`);
                     reject(parseError);
