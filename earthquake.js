@@ -35,7 +35,7 @@ export function fetchEarthquakeData() {
             if (res.statusCode === 200) {
                 try {
                     const xmlToJson = convert.xml2json(body, { compact: true, spaces: 4 });
-                    
+                    console.log(1);
                     const parsedData = JSON.parse(xmlToJson);
 
                     // Check the structure of the parsedData to match the actual API response
