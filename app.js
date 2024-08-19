@@ -12,6 +12,7 @@ import { Client, Events, GatewayIntentBits } from 'discord.js'; // discord.js �
 
 const app = express();
 const PORT = process.env.PORT || 4030;
+let data_system_1 = 0;
 
 // Discord client 설정
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -53,7 +54,6 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
 	  
-    let data_system_1 = 0;
     let description = '';
     let color_x;
     let title = '';
