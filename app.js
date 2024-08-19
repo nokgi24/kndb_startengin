@@ -91,13 +91,13 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
     try {
       // Assuming transformEarthquakeData is called to fetch the latest data
       const transformedData = await fetchEarthquakeData();
-      console.log(transformedData);
+      
       mt = transformedData[0].mt || '정보 없음';
       inT = transformedData[0].inT || '정보 없음';
       dep = transformedData[0].dep || '정보 없음';
       tmFc = transformedData[0].tmFc || '정보 없음';
       loc = transformedData[0].loc || '정보없음';
-
+      console.log(mt);
 
       if (data_system_1 === '2') {
         title = '[국외지진정보]';
