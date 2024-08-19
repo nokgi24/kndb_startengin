@@ -26,6 +26,8 @@ let loc = '';
 // Discord client 설정
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
+app.use('/interactions', express.raw({ type: 'application/json' }));
+
 client.once(Events.ClientReady, readyClient => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
@@ -33,8 +35,6 @@ client.once(Events.ClientReady, readyClient => {
 // Log in to Discord with your client's token
 client.login(process.env.DISCORD_TOKEN);
 
-app.use(express.json());
-app.use('/protected', verifyRequest);
 
 app.get('/', (req, res) => {
   res.send('Server is running');
