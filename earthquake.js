@@ -40,8 +40,7 @@ export function fetchEarthquakeData() {
                     const xmlToJson = convert.xml2json(body, { compact: true, spaces: 4 });
                     
                     const parsedData = JSON.parse(xmlToJson);
-                    console.log('Parsed Data:', parsedData);
-
+                    
                     const resultCode = parsedData.response?.header?.resultCode?._text;
                     if (resultCode !== '00') {
                         return reject(new Error(`API Error: ${resultCode}`));
