@@ -2,20 +2,20 @@
 import convert from 'xml-js'; 
 
 export function transformEarthquakeData(parsedData) {
-    // 데이터가 배열 형태로 들어오므로 첫 번째 요소를 가져옵니다.
-    const firstData = Array.isArray(parsedData) ? parsedData[0] : parsedData;
+    console.log('Raw Parsed Data:', parsedData);
 
-    if (!firstData || !firstData.response || !firstData.response.body) {
+    const firstData = parsedData?.response?.body;
+
+    if (!firstData) {
         console.warn('Invalid data format:', parsedData);
-        console.log(fcTp);
-
         return [];
     }
     
-    const { response } = firstData;
-    const { body: responseBody } = response;
+    // 데이터 구조 수정
+    const responseBody = firstData;
 
     const items = Array.isArray(responseBody.items.item) ? responseBody.items.item : [responseBody.items.item];
+
     return items.map(item => ({
         numOfRows: responseBody.numOfRows?._text || null,
         pageNo: responseBody.pageNo?._text || null,
@@ -39,6 +39,5 @@ export function transformEarthquakeData(parsedData) {
         dep: item.dep?._text || null,
         rem: item.rem?._text || null,
         cor: item.cor?._text || null,
-        
     }));
 }
