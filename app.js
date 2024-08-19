@@ -145,6 +145,7 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
         dep = transformedData[0].dep || '정보 없음';
         tmFc = transformedData[0].tmFc || '정보 없음';
 	loc = transformedData[0].loc || '정보없음';
+     }
     } catch (error) {
       console.error('Error processing earthquake data:', error);
       title = '[오류]';
