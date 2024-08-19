@@ -92,7 +92,8 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
       } else {
         same = 1;
       }
-
+      console.log("datasystem_1");
+      console.log(data_system_1);
       if (data_system_1 === '2') {
         title = '[국외지진정보]';
         description = '국외 지진정보가 발표되었습니다. 해당지역에서는 주의하시기 바랍니다.';
