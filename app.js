@@ -22,7 +22,7 @@ let mt = '';
 let inT = '';
 let dep = '';
 let tmFc = '';
-
+let loc = '';
 // Discord client 설정
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -139,13 +139,11 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
           }
         });
       }
-
-      if (same === 0) {
         mt = transformedData[0].mt || '정보 없음';
         inT = transformedData[0].inT || '정보 없음';
         dep = transformedData[0].dep || '정보 없음';
         tmFc = transformedData[0].tmFc || '정보 없음';
-      }
+	loc = transformedData[0].loc || '정보없음';
     } catch (error) {
       console.error('Error processing earthquake data:', error);
       title = '[오류]';
@@ -167,6 +165,7 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
                 { name: '최대 측정 진도', value: inT, inline: true },
                 { name: '깊이', value: dep, inline: true },
                 { name: '발표시각 ', value: tmFc, inline: true }
+	        { name: '위치 ', value: loc, inline: true }
               ],
               timestamp: new Date(),
               color: color_x,
