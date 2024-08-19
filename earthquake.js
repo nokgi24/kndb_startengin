@@ -43,7 +43,6 @@ export function fetchEarthquakeData() {
                     const resultCode = parsedData.response?.header?.resultCode?._text;
 
                     if (!parsedData.response?.body || !parsedData.response.body.items || !parsedData.response.body.items.item) {
-                        console.error('No earthquake data available.');
                         return resolve(null);
                     }
 
