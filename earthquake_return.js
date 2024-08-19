@@ -18,17 +18,17 @@ export async function earthquake_emergency() {
             return 0;
         }
 
-        const transformedData = transformEarthquakeData(rawData);
+       
 
-        if (isDataEqual(transformedData, lastData)) {
+        if (isDataEqual(rawData, lastData)) {
             data_system = 0;
             return 0;
         }
 
-        lastData = transformedData;
-        if (transformedData.length > 0) {
-            data_system = transformedData[0].fcTp;
-            console.log(transformedData[0].fcTp);
+        lastData = rawData;
+        if (rawData.length > 0) {
+            data_system = rawData[0].fcTp;
+            console.log(rawData[0].fcTp);
 
         }
         return 1;
