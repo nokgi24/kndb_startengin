@@ -26,6 +26,7 @@ let loc = '';
 // Discord client 설정
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
+app.use(express.json());
 app.use('/protected', verifyRequest);
 
 client.once(Events.ClientReady, readyClient => {
