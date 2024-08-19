@@ -2,7 +2,7 @@
 import convert from 'xml-js'; 
 
 export function transformEarthquakeData(parsedData) {
-    console.log('Raw Parsed Data:', parsedData);
+
 
     const firstData = parsedData?.response?.body;
 
