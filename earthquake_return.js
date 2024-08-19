@@ -12,6 +12,7 @@ function isDataEqual(newData, oldData) {
 export async function earthquake_emergency() {
     try {
         const rawData = await fetchEarthquakeData();
+        console.log(rawData);
         
         if (!rawData) {
             data_system = 0;
