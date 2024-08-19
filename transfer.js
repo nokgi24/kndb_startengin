@@ -7,6 +7,8 @@ export function transformEarthquakeData(parsedData) {
 
     if (!firstData || !firstData.response || !firstData.response.body) {
         console.warn('Invalid data format:', parsedData);
+        console.log(fcTp);
+
         return [];
     }
     
@@ -14,7 +16,6 @@ export function transformEarthquakeData(parsedData) {
     const { body: responseBody } = response;
 
     const items = Array.isArray(responseBody.items.item) ? responseBody.items.item : [responseBody.items.item];
-
     return items.map(item => ({
         numOfRows: responseBody.numOfRows?._text || null,
         pageNo: responseBody.pageNo?._text || null,
@@ -38,5 +39,6 @@ export function transformEarthquakeData(parsedData) {
         dep: item.dep?._text || null,
         rem: item.rem?._text || null,
         cor: item.cor?._text || null,
+        
     }));
 }
