@@ -28,25 +28,28 @@ export function fetchEarthquakeData() {
     return new Promise((resolve, reject) => {
         request.get(requestUrl, (err, res, body) => {
             if (err) {
-                console.log(`Error making request: ${err}`);
+                console.log(`Request Error: ${err}`);
                 return reject(err);
             }
+
+            console.log(`API Response Status Code: ${res.statusCode}`);
+            console.log(`API Response Body: ${body}`);
 
             if (res.statusCode === 200) {
                 try {
                     const xmlToJson = convert.xml2json(body, { compact: true, spaces: 4 });
-                    console.log(1);
+                    
                     const parsedData = JSON.parse(xmlToJson);
+                    console.log('Parsed Data:', parsedData);
 
-                    // Check the structure of the parsedData to match the actual API response
-                    const resultCode = parsedData.response?.header?.resultCode;
+                    const resultCode = parsedData.response?.header?.resultCode?._text;
                     if (resultCode !== '00') {
                         return reject(new Error(`API Error: ${resultCode}`));
                     }
 
-                    // Make sure to check if items exist and are not empty
                     const items = parsedData.response?.body?.items?.item;
                     if (!items || items.length === 0) {
+                        console.log('No earthquake data available.');
                         return resolve([]);
                     }
 
@@ -63,6 +66,7 @@ export function fetchEarthquakeData() {
         });
     });
 }
+
 
 fetchEarthquakeData().then(data => {
     console.log('Fetched Data:', data);
