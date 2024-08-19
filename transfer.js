@@ -1,14 +1,17 @@
+
+import convert from 'xml-js'; 
+
 export function transformEarthquakeData(parsedData) {
     if (!parsedData || !parsedData.response || !parsedData.response.body) {
         console.warn('Invalid data format:', parsedData);
-        return []; 
+        return [];
     }
-    
+
     const { response } = parsedData;
     const { body: responseBody } = response;
 
     const items = Array.isArray(responseBody.items.item) ? responseBody.items.item : [responseBody.items.item];
-    
+
     return items.map(item => ({
         numOfRows: responseBody.numOfRows?._text || null,
         pageNo: responseBody.pageNo?._text || null,
