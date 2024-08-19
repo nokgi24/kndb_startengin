@@ -5,10 +5,10 @@ import {
   InteractionResponseType,
   verifyKeyMiddleware,
 } from 'discord-interactions';
-import { verifyRequest } from './Authentication.js';  // 인증 미들웨어
+import { verifyRequest } from './Authentication.js';  
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { transformEarthquakeData } from './transfer.js';
-import { Client, Events, GatewayIntentBits } from 'discord.js'; // discord.js 추가
+import { Client, Events, GatewayIntentBits } from 'discord.js'; 
 
 const app = express();
 const PORT = process.env.PORT || 4030;
