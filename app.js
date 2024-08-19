@@ -30,7 +30,6 @@ app.get('/', (req, res) => {
 });
 
 
-// 지진 정보 업데이트 및 Discord로 메시지 전송
 async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
@@ -41,11 +40,9 @@ async function handleEarthquakeUpdate() {
   }
 }
 
-// 주기적으로 지진 정보 업데이트
 setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', async function (req, res) {
-  // 여기서는 verifyRequest 미들웨어를 적용하지 않음
   const { type, data } = req.body;
 	
   if (type === InteractionType.PING) {
