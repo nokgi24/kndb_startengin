@@ -89,8 +89,7 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
     let tmFc = '';
     try {
       // Assuming transformEarthquakeData is called to fetch the latest data
-      const transformedData = await transformEarthquakeData();
-      console.log('Current data_system value:', data_system);
+      const transformedData = await fetchEarthquakeData();
 
       if (data_system_1 === '2') {
         title = '[국외지진정보]';
