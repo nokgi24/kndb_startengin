@@ -8,6 +8,7 @@ import {
 import { verifyRequest } from './Authentication.js';  // 인증 미들웨어
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { transformEarthquakeData } from './transfer.js';
+import { fetchEarthquakeData } from './earthquake.js';
 import { Client, Events, GatewayIntentBits } from 'discord.js'; // discord.js 추가
 
 const app = express();
@@ -67,7 +68,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
     try {
       // Assuming transformEarthquakeData is called to fetch the latest data
-      const transformedData = await transformEarthquakeData();
+      const transformedData = await fetchEarthquakeData();
       console.log('Current data_system value:', data_system);
 
       if (data_system === '2') {
