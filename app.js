@@ -1,19 +1,20 @@
-mport 'dotenv/config';
+import 'dotenv/config';
 import express from 'express';
 import {
   InteractionType,
   InteractionResponseType,
   verifyKeyMiddleware,
 } from 'discord-interactions';
-import { verifyRequest } from './Authentication.js';  // 인증 미들웨어
+import { verifyRequest } from './Authentication.js';  
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { transformEarthquakeData } from './transfer.js';
+import { Client, Events, GatewayIntentBits } from 'discord.js'; 
 import { fetchEarthquakeData } from './earthquake.js';
-import { Client, Events, GatewayIntentBits } from 'discord.js'; // discord.js 추가
 
 const app = express();
 const PORT = process.env.PORT || 4030;
 let data_system_1 = 0;
+let same = 0;
 let description = '';
 let color_x;
 let title = '';
@@ -22,13 +23,11 @@ let inT = '';
 let dep = '';
 let tmFc = '';
 let loc = '';
-let same = 0;
-
 // Discord client 설정
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once(Events.ClientReady, readyClient => {
-  console.log(Ready! Logged in as ${readyClient.user.tag});
+  console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
 // Log in to Discord with your client's token
@@ -46,32 +45,7 @@ async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
     await earthquake_emergency();
-    console.log('Update complete.');
-  } catch (error) {
-    console.error('Error updating earthquake information:', error);
-  }
-}
-
-setInterval(handleEarthquakeUpdate, 10000);
-
-app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
-  const { type, data } = req.body;
-	
-  if (type === InteractionType.PING) {
-    console.log("pong");
-    return res.send({ type: InteractionResponseType.PONG });
-  }
-  if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name } = data;
-	  
-   
-
-    try {
-      // Assuming transformEarthquakeData is called to fetch the latest data
-      const transformedData = await fetchEarthquakeData();
-      console.log('Current data_system value:', data_system);
-
-      if (data_system === '2') {
+     if (data_system === '2') {
         data_system_1 = data_system;
         same = 0;
       } else if (data_system === '3') {
@@ -95,6 +69,28 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       } else {
         same = 1;
       }
+    console.log("datasystem_1");
+    console.log(data_system_1);
+  } catch (error) {
+    console.error('Error updating earthquake information:', error);
+  }
+}
+
+setInterval(handleEarthquakeUpdate, 10000);
+
+app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
+  const { type, data } = req.body;
+	
+  if (type === InteractionType.PING) {
+    console.log("pong");
+    return res.send({ type: InteractionResponseType.PONG });
+  }
+  if (type === InteractionType.APPLICATION_COMMAND) {
+    const { name } = data;
+	  
+    try {
+      // Assuming transformEarthquakeData is called to fetch the latest data
+      const transformedData = await fetchEarthquakeData();
 
       if (data_system_1 === '2') {
         title = '[국외지진정보]';
@@ -143,13 +139,11 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
           }
         });
       }
-      if (same === 0) {
         mt = transformedData[0].mt || '정보 없음';
         inT = transformedData[0].inT || '정보 없음';
         dep = transformedData[0].dep || '정보 없음';
         tmFc = transformedData[0].tmFc || '정보 없음';
-        loc = transformedData[0].loc || '정보 없음'; // 위치 정보 추가
-      }
+	loc = transformedData[0].loc || '정보없음';
     } catch (error) {
       console.error('Error processing earthquake data:', error);
       title = '[오류]';
@@ -171,7 +165,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
                 { name: '최대 측정 진도', value: inT, inline: true },
                 { name: '깊이', value: dep, inline: true },
                 { name: '발표시각 ', value: tmFc, inline: true }
-                { name: '위치 ', value: loc, inline: true }
+	        { name: '위치 ', value: loc, inline: true }
               ],
               timestamp: new Date(),
               color: color_x,
@@ -196,4 +190,3 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 app.listen(PORT, () => {
   console.log('Listening on port', PORT);
 });
-
