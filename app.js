@@ -164,7 +164,7 @@ app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyM
                 { name: 'M', value: mt, inline: true },
                 { name: '최대 측정 진도', value: inT, inline: true },
                 { name: '깊이', value: dep, inline: true },
-                { name: '발표시각 ', value: tmFc, inline: true }
+                { name: '발표시각 ', value: tmFc, inline: true },
 	        { name: '위치 ', value: loc, inline: true }
               ],
               timestamp: new Date(),
