@@ -142,13 +142,13 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
           }
         });
       }
-
-      
-       mt = transformedData[0].mt || '정보 없음';
-       inT = transformedData[0].inT || '정보 없음';
-       dep = transformedData[0].dep || '정보 없음';
-       tmFc = transformedData[0].tmFc || '정보 없음';
-       loc = transformedData[0].loc || '정보 없음';
+      if (same === 0) {
+        mt = transformedData[0].mt || '정보 없음';
+        inT = transformedData[0].inT || '정보 없음';
+        dep = transformedData[0].dep || '정보 없음';
+        tmFc = transformedData[0].tmFc || '정보 없음';
+        loc = transformedData[0].loc || '정보 없음'; // 위치 정보 추가
+      }
     } catch (error) {
       console.error('Error processing earthquake data:', error);
       title = '[오류]';
