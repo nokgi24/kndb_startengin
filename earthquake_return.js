@@ -1,6 +1,4 @@
 import { fetchEarthquakeData } from './earthquake.js';
-import { transformEarthquakeData } from './transfer.js';
-
 let lastData = null; 
 let data_system = 0; 
 
