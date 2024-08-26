@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const ngrokPath = path.resolve(__dirname, 'ngrok'); 
 
+const ngrokPath = '/home/susu3100/kndb/node_modules/ngrok'; 
 function startNgrok() {
     const args = [
         'http',
