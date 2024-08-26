@@ -7,7 +7,6 @@ import {
 } from 'discord-interactions';
 import { verifyRequest } from './Authentication.js';  
 import { earthquake_emergency, data_system } from './earthquake_return.js';
-import { transformEarthquakeData } from './transfer.js';
 import { Client, Events, GatewayIntentBits } from 'discord.js'; 
 import { fetchEarthquakeData } from './earthquake.js';
 
