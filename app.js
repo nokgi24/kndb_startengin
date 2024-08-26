@@ -36,7 +36,7 @@ client.login(process.env.DISCORD_TOKEN);
 
 // 일반적인 요청에 대해서는 express.json() 사용
 app.use('/protected', verifyRequest);
-app.use(express.json());
+app.use('/api', express.json());
 
 app.get('/', (req, res) => {
   res.send('Server is running');
