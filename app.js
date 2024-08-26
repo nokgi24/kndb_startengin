@@ -61,7 +61,6 @@ setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (req, res) => {
   const { type, data } = req.body;
-  console.log('Received interaction:', req.body);
 	
   if (type === InteractionType.PING) {
     console.log("pong");
