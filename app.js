@@ -78,7 +78,7 @@ async function handleEarthquakeUpdate() {
 
 setInterval(handleEarthquakeUpdate, 10000);
 
-app.post('/interactions', express.raw({ type: 'application/json' }),  verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
+app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), (req, res) {
   const { type, data } = req.body;
 	
   if (type === InteractionType.PING) {
