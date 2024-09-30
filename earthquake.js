@@ -3,7 +3,7 @@ import request from 'request';
 import convert from 'xml-js';
 import { transformEarthquakeData } from './transfer.js'
 
-const serviceKey = process.env,Services_key;
+const serviceKey = process.env.Services_key;
 
 function getPastTimeISOString(days) {
     const past = new Date();
