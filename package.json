@@ -1,6 +1,6 @@
 {
   "name": "kndb_bot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "bot_start",
   "main": "app.js",
   "type": "module",
