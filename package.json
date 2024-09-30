@@ -1,0 +1,29 @@
+{
+  "name": "kndb_bot",
+  "version": "2.0.0",
+  "description": "bot_start",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "register": "node commands.js",
+    "earthquake": "node earthquake.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "nokgi24",
+  "license": "ISC",
+  "keywords": [
+    "bot"
+  ],
+  "dependencies": {
+    "axios": "^1.7.3",
+    "discord-interactions": "^4.0.0",
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "ngrok": "^5.0.0-beta.2",
+    "node-fetch": "^3.3.2",
+    "request": "^2.88.2",
+    "xml-js": "^1.6.11"
+  }
+}
