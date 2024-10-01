@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { capitalize, InstallGlobalCommands } from './utils.js';
+import { REST, Routes } from 'discord.js';
 
 // Get the game choices from game.js
 function createCommandChoices() {
@@ -9,7 +10,6 @@ function createCommandChoices() {
   return commandChoices;
 }
 
-// Simple test command
 const common_COMMAND = {
   name: 'info',
   description: 'Basic command',
@@ -26,6 +26,38 @@ const ping_command = {
   description: 'ping',
   type: 1,
 };
-const ALL_COMMANDS = [common_COMMAND , Realtest_COMMAND, ping_command];
+const commands_channel = [
+  {
+    name: 'setchannel',
+    description: '자동 메시지를 보낼 채널을 설정합니다.',
+    options: [
+      {
+        name: 'channel',
+        description: '자동 메시지를 보낼 채널을 선택하세요.',
+        type: 7, 
+        required: true,
+      },
+    ],
+  },
+];
+
+const registerCommands = async (client) => {
+  const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+  
+  try {
+    console.log('Started refreshing application (/) commands.');
+
+    await rest.put(
+      Routes.applicationGuildCommands(client.user.id, process.env.GUILD_ID),
+      { body: commands },
+    );
+
+    console.log('Successfully reloaded application (/) commands.');
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const ALL_COMMANDS = [common_COMMAND , Realtest_COMMAND, ping_command,commands_channel];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
