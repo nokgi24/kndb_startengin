@@ -9,6 +9,7 @@ import { verifyRequest } from './Authentication.js';
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { Client, Events, GatewayIntentBits } from 'discord.js'; 
 import { fetchEarthquakeData } from './earthquake.js';
+import { registerCommands } from './command.js';
 
 const app = express();
 const PORT = process.env.PORT || 4030;
@@ -22,11 +23,14 @@ let inT = '';
 let dep = '';
 let tmFc = '';
 let loc = '';
+let selectedChannelId = null;
+
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-client.once(Events.ClientReady, readyClient => {
+client.once(Events.ClientReady, async (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+  await registerCommands(readyClient); 
 });
 
 client.login(process.env.DISCORD_TOKEN);
@@ -36,6 +40,19 @@ app.use('/api', express.json());
 
 app.get('/', (req, res) => {
   res.send('Server is running');
+});
+
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isCommand()) return;
+
+  const { commandName, options } = interaction;
+
+  if (commandName === 'setchannel') {
+    const channel = options.getChannel('channel');
+    selectedChannelId = channel.id;
+
+    await interaction.reply(`자동 메시지를 보낼 채널이 ${channel.name}(으)로 설정되었습니다.`);
+  }
 });
 
 function getEarthquakeMessage(data_system) {
