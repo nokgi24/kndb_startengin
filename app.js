@@ -150,6 +150,9 @@ async function handleEarthquakeUpdate() {
                 fields: fields,
                 timestamp: new Date(),
                 color: color_x,
+		image: {
+		url: '',
+		},
                 footer: {
                   text: '기상청_kma제공'
                 }
