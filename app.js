@@ -9,7 +9,7 @@ import { verifyRequest } from './Authentication.js';
 import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { Client, Events, GatewayIntentBits } from 'discord.js'; 
 import { fetchEarthquakeData } from './earthquake.js';
-import { registerCommands } from './command.js';
+import { registerCommands } from './commands.js';
 
 const app = express();
 const PORT = process.env.PORT || 4030;
