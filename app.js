@@ -119,6 +119,7 @@ async function handleEarthquakeUpdate() {
         const dep = transformedData[0].dep || '정보 없음';
         const tmFc = transformedData[0].tmFc || '정보 없음';
         const loc = transformedData[0].loc || '정보 없음';
+	const img = transgormedData[0].img || 'no data';
 
         const formattedTmFc = tmFc !== '정보 없음' ? formatDate(tmFc) : '정보 없음';
     } catch (error) {
@@ -151,7 +152,7 @@ async function handleEarthquakeUpdate() {
                 timestamp: new Date(),
                 color: color_x,
 		image: {
-		url: '',
+		url: '${img}',
 		},
                 footer: {
                   text: '기상청_kma제공'
