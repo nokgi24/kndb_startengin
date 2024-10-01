@@ -15,14 +15,6 @@ const app = express();
 const PORT = process.env.PORT || 4030;
 let data_system_1 = 0;
 let same = 0;
-let description = '';
-let color_x;
-let title = '';
-let mt = '';
-let inT = '';
-let dep = '';
-let tmFc = '';
-let loc = '';
 let selectedChannelId = null;
 
 
