@@ -41,7 +41,7 @@ const commands_channel = [
   },
 ];
 
-const registerCommands = async (client) => {
+export const registerCommands = async (client) => {
   const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
   
   try {
