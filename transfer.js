@@ -10,8 +10,13 @@ export function transformEarthquakeData(parsedData) {
     // 데이터 구조 수정
     const responseBody = firstData;
 
-    const items = Array.isArray(responseBody.items.item) ? responseBody.items.item : [responseBody.items.item];
+    const items = responseBody.items && responseBody.items.item
+      ? Array.isArray(responseBody.items.item)
+        ? responseBody.items.item
+        : [responseBody.items.item]
+      : [];
 
+    
     return items.map(item => ({
         numOfRows: responseBody.numOfRows?._text || null,
         pageNo: responseBody.pageNo?._text || null,
