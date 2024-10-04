@@ -100,12 +100,24 @@ async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
     const transformedData = await earthquake_emergency();
+
+    if (!transformedData || transformedData.length === 0) {
+      console.log('현재 지진 정보가 없습니다.');
+      return; 
+    }
     if (['2', '3', '5', '11', '12', '13', '14'].includes(data_system)) {
       data_system_1 = data_system;
       same = 0;
       try{
+	      
+	let title = '[정보]';
+        let description = '지진 정보가 수신되었습니다.';
+        let color_x = 0x00ff00;
+	      
         const { title, description, color_x } = getEarthquakeMessage(data_system);
-
+	
+        
+	
         const mt = transformedData[0].mt || '정보 없음';
         const inT = transformedData[0].inT || '정보 없음';
         const dep = transformedData[0].dep || '정보 없음';
@@ -114,6 +126,7 @@ async function handleEarthquakeUpdate() {
 	const img = transformedData[0].img || 'https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_1280.jpg';
 
         const formattedTmFc = tmFc !== '정보 없음' ? formatDate(tmFc) : '정보 없음';
+	
     } catch (error) {
       console.error('Error processing earthquake data:', error);
       title = '[오류]';
