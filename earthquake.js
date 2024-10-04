@@ -39,10 +39,14 @@ export function fetchEarthquakeData() {
                 try {
                     const xmlToJson = convert.xml2json(body, { compact: true, spaces: 4 });
                     const parsedData = JSON.parse(xmlToJson);
-                    const transformedData = transformEarthquakeData(parsedData);
-                    resolve(transformedData);
                     
-                  
+                    if (parsedData?.response?.body?.items?.item) {
+                        const transformedData = transformEarthquakeData(parsedData);
+                        resolve(transformedData);
+                    } else {
+                        console.log("현재 지진 정보가 없습니다.");
+                        resolve([]); 
+                    }
                 } catch (parseError) {
                     console.error(`Parse Error: ${parseError}`);
                     reject(parseError);
@@ -55,9 +59,12 @@ export function fetchEarthquakeData() {
     });
 }
 
-
 fetchEarthquakeData().then(data => {
-    
+    if (data.length > 0) {
+        console.log('Earthquake data:', data);
+    } else {
+        console.log('No earthquake data available.');
+    }
 }).catch(error => {
     console.error('Error:', error);
 });
