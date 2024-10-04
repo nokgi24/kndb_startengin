@@ -99,7 +99,7 @@ function getEarthquakeMessage(data_system) {
 async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
-    await earthquake_emergency();
+    const transformedData = await earthquake_emergency();
     if (['2', '3', '5', '11', '12', '13', '14'].includes(data_system)) {
       data_system_1 = data_system;
       same = 0;
