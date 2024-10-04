@@ -99,7 +99,8 @@ function getEarthquakeMessage(data_system) {
 async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
-    const transformedData = await earthquake_emergency();
+    await earthquake_emergency();
+    const transformedData = await fetchEarthquakeData();
 
     if (!transformedData || transformedData.length === 0) {
       console.log('현재 지진 정보가 없습니다.');
