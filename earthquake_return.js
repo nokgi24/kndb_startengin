@@ -40,3 +40,4 @@ export async function earthquake_emergency() {
 }
 
 export { data_system };
+
