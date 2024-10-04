@@ -1,7 +1,6 @@
 export function transformEarthquakeData(parsedData) {
     const firstData = parsedData?.response?.body;
 
-    // 응답 데이터 검증
     if (!firstData || !firstData.items) {
         console.error("Invalid data structure or missing items:", parsedData);
         return [];  
