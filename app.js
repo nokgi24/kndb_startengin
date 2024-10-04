@@ -111,9 +111,6 @@ async function handleEarthquakeUpdate() {
       same = 0;
       try{
 	      
-	let title = '[정보]';
-        let description = '지진 정보가 수신되었습니다.';
-        let color_x = 0x00ff00;
 	      
         const { title, description, color_x } = getEarthquakeMessage(data_system);
 	
