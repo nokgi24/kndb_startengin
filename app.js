@@ -122,7 +122,6 @@ async function handleEarthquakeUpdate() {
         const loc = transformedData[0].loc || '정보 없음';
 	const img = transformedData[0].img || 'https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_1280.jpg';
 
-        const formattedTmFc = tmFc !== '정보 없음' ? formatDate(tmFc) : '정보 없음';
 	
     } catch (error) {
       console.error('Error processing earthquake data:', error);
