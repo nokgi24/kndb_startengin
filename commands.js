@@ -43,7 +43,7 @@ export const registerCommands = async (client) => {
     console.error(error);
   }
 };
-const ALL_COMMANDS = [common_COMMAND, Realtest_COMMAND, ping_command, ...commands_channel];
+const ALL_COMMANDS = [ping_command, ...commands_channel];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
 
