@@ -17,7 +17,7 @@ let data_system_1 = 0;
 let same = 0;
 let selectedChannelId = null;
 
-
+console.log(process.env.DISCORD_TOKEN);
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once(Events.ClientReady, async (readyClient) => {
