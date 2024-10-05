@@ -105,108 +105,113 @@ async function handleEarthquakeUpdate() {
       console.log('현재 지진 정보가 없습니다.');
       return; 
     }
+
     if (['2', '3', '5', '11', '12', '13', '14'].includes(data_system)) {
       data_system_1 = data_system;
       same = 0;
-      try{
-	      
-	      
-        const { title, description, color_x } = getEarthquakeMessage(data_system);
-	
-        
-	
+
+      let title = '[정보]';
+      let description = '지진 정보가 업데이트되었습니다.';
+      let color_x = 0x00ff00; // 기본값 설정
+
+      try {
+        const { title: msgTitle, description: msgDescription, color_x: msgColor } = getEarthquakeMessage(data_system);
+        title = msgTitle || title; 
+        description = msgDescription || description; 
+        color_x = msgColor || color_x; 
+
         const mt = transformedData[0].mt || '정보 없음';
         const inT = transformedData[0].inT || '정보 없음';
         const dep = transformedData[0].dep || '정보 없음';
         const tmFc = transformedData[0].tmFc || '정보 없음';
         const loc = transformedData[0].loc || '정보 없음';
-	const img = transformedData[0].img || 'https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_1280.jpg';
+        const img = transformedData[0].img || 'https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_1280.jpg';
 
-	
-    } catch (error) {
-      console.error('Error processing earthquake data:', error);
-      if (selectedChannelId) {
-        const channel = client.channels.cache.get(selectedChannelId);
-        if (channel) {
-          await channel.send({
-            embeds: [
-              {
-                title: "error",
-                description: description,
-                fields: fields,
-                timestamp: new Date(),
-                color: color_x,
-		image: {
-		url: img,
-		},
-                footer: {
-                  text: '기상청_kma제공'
+        const fields = [
+          { name: 'M', value: mt, inline: true },
+          { name: '깊이', value: dep, inline: true },
+          { name: '발표시각', value: tmFc, inline: true },
+          { name: '위치', value: loc, inline: true }
+        ];
+
+        if (data_system !== '12') {
+          fields.splice(1, 0, { name: '최대 측정 진도', value: inT, inline: true });
+        }
+
+        if (selectedChannelId) {
+          const channel = client.channels.cache.get(selectedChannelId);
+          if (channel) {
+            await channel.send({
+              embeds: [
+                {
+                  title: title,
+                  description: description,
+                  fields: fields,
+                  timestamp: new Date(),
+                  color: color_x,
+                  image: {
+                    url: img,
+                  },
+                  footer: {
+                    text: '기상청_kma제공'
+                  }
                 }
-              }
-            ]
-          });
+              ]
+            });
+          } else {
+            console.error('지정된 채널을 찾을 수 없습니다.');
+          }
         } else {
-          console.error('지정된 채널을 찾을 수 없습니다.');
+          console.log('채널이 지정되지 않았습니다.');
+        }
+      } catch (error) {
+        console.error('Error processing earthquake data:', error);
+        title = "[오류]";
+        description = "지진 정보 처리 중 오류가 발생했습니다.";
+        color_x = 0xff0000;
+
+        if (selectedChannelId) {
+          const channel = client.channels.cache.get(selectedChannelId);
+          if (channel) {
+            await channel.send({
+              embeds: [
+                {
+                  title: title,
+                  description: description,
+                  fields: [], // 오류 시 필드 없음
+                  timestamp: new Date(),
+                  color: color_x,
+                  footer: {
+                    text: '기상청_kma제공'
+                  }
+                }
+              ]
+            });
+          } else {
+            console.error('지정된 채널을 찾을 수 없습니다.');
+          }
         }
       }
-
-     }
-      const fields = [
-        { name: 'M', value: mt, inline: true },
-        { name: '깊이', value: dep, inline: true },
-        { name: '발표시각', value: tmFc, inline: true },
-        { name: '위치', value: loc, inline: true }
-      ];
-
-      if (data_system !== '12') {
-        fields.splice(1, 0, { name: '최대 측정 진도', value: inT, inline: true });
-      }
-
-      if (selectedChannelId) {
-        const channel = client.channels.cache.get(selectedChannelId);
-        if (channel) {
-          await channel.send({
-            embeds: [
-              {
-                title: title,
-                description: description,
-                fields: fields,
-                timestamp: new Date(),
-                color: color_x,
-		image: {
-		url: img,
-		},
-                footer: {
-                  text: '기상청_kma제공'
-                }
-              }
-            ]
-          });
-        } else {
-          console.error('지정된 채널을 찾을 수 없습니다.');
-        }
-      } else {
-        console.log('채널이 지정되지 않았습니다.');
-      }
-      } else {
-        console.log('현재 지진 정보가 없습니다.');
-      }
-   } catch (error) {
-      console.error('Error updating earthquake information:', error);
+    } else {
+      console.log('현재 지진 정보가 없습니다.');
     }
-    console.log("datasystem_1:", data_system_1);
+  } catch (error) {
+    console.error('Error updating earthquake information:', error);
   }
+  console.log("datasystem_1:", data_system_1);
+}
 
 setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (req, res) => {
   const { type, data } = req.body;
-	
+
   if (type === InteractionType.PING) {
     console.log("pong");
     return res.send({ type: InteractionResponseType.PONG });
   }
-})
+});
+
  
 
 
