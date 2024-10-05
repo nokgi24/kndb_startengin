@@ -47,8 +47,8 @@ export const registerCommands = async (client) => {
     console.log('Started refreshing application (/) commands.');
 
     await rest.put(
-      Routes.applicationGuildCommands(client.user.id, process.env.GUILD_ID),
-      { body: ALL_COMMANDS },  
+      Routes.applicationCommands(client.user.id),  
+      { body: ALL_COMMANDS },
     );
 
     console.log('Successfully reloaded application (/) commands.');
@@ -56,7 +56,6 @@ export const registerCommands = async (client) => {
     console.error(error);
   }
 };
-
 const ALL_COMMANDS = [common_COMMAND, Realtest_COMMAND, ping_command, ...commands_channel];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
