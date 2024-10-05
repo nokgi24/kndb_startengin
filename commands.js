@@ -6,19 +6,6 @@ function createCommandChoices() {
   const commandChoices = [];
   return commandChoices;
 }
-
-const common_COMMAND = {
-  name: 'info',
-  description: 'Basic command',
-  type: 1,
-};
-
-const Realtest_COMMAND = {
-  name: 'real_situation_test',
-  description: 'Simulate a real situation',
-  type: 1,
-};
-
 const ping_command = {
   name: 'ping',
   description: 'ping',
