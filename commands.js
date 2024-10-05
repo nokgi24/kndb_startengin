@@ -2,11 +2,8 @@ import 'dotenv/config';
 import { capitalize, InstallGlobalCommands } from './utils.js';
 import { REST, Routes } from 'discord.js';
 
-// Get the game choices from game.js
 function createCommandChoices() {
   const commandChoices = [];
-
-
   return commandChoices;
 }
 
@@ -21,11 +18,13 @@ const Realtest_COMMAND = {
   description: 'Simulate a real situation',
   type: 1,
 };
+
 const ping_command = {
   name: 'ping',
   description: 'ping',
   type: 1,
 };
+
 const commands_channel = [
   {
     name: 'setchannel',
@@ -49,7 +48,7 @@ export const registerCommands = async (client) => {
 
     await rest.put(
       Routes.applicationGuildCommands(client.user.id, process.env.GUILD_ID),
-      { body: commands },
+      { body: ALL_COMMANDS },  
     );
 
     console.log('Successfully reloaded application (/) commands.');
@@ -58,6 +57,9 @@ export const registerCommands = async (client) => {
   }
 };
 
-const ALL_COMMANDS = [common_COMMAND , Realtest_COMMAND, ping_command,commands_channel];
+// 모든 명령어 배열
+const ALL_COMMANDS = [common_COMMAND, Realtest_COMMAND, ping_command, ...commands_channel];
 
+// 글로벌 명령어 설치
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
+
