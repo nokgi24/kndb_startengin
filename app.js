@@ -125,9 +125,35 @@ async function handleEarthquakeUpdate() {
 	
     } catch (error) {
       console.error('Error processing earthquake data:', error);
-      title = '[오류]';
-      description = '지진 정보 처리 중 오류가 발생했습니다.';
-      color_x = 0xff0000;
+      if (selectedChannelId) {
+        const channel = client.channels.cache.get(selectedChannelId);
+        if (channel) {
+          await channel.send({
+            embeds: [
+              {
+                title: "error",
+                description: description,
+                fields: fields,
+                timestamp: new Date(),
+                color: color_x,
+		image: {
+		url: img,
+		},
+                footer: {
+                  text: '기상청_kma제공'
+                }
+              }
+            ]
+          });
+        } else {
+          console.error('지정된 채널을 찾을 수 없습니다.');
+        }
+      } else {
+        console.log('채널이 지정되지 않았습니다.');
+      }
+      } else {
+        console.log('현재 지진 정보가 없습니다.');
+      }
     }
 
       const fields = [
