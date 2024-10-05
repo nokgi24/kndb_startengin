@@ -151,11 +151,6 @@ async function handleEarthquakeUpdate() {
       } else {
         console.log('채널이 지정되지 않았습니다.');
       }
-      } else {
-        console.log('현재 지진 정보가 없습니다.');
-      }
-    }
-
       const fields = [
         { name: 'M', value: mt, inline: true },
         { name: '깊이', value: dep, inline: true },
