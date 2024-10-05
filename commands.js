@@ -57,9 +57,7 @@ export const registerCommands = async (client) => {
   }
 };
 
-// 모든 명령어 배열
 const ALL_COMMANDS = [common_COMMAND, Realtest_COMMAND, ping_command, ...commands_channel];
 
-// 글로벌 명령어 설치
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
 
