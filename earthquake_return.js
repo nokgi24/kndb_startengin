@@ -22,9 +22,8 @@ export async function earthquake_emergency() {
             return 0;
         }
 
-        lastData = rawData;
-
-        if (Array.isArray(rawData) && rawData.length > 0 && rawData[0].fcTp) {
+        if (Array.isArray(rawData) && rawData.length > 0 && rawData[0].fcTp) { 
+            lastData = rawData;
             data_system = rawData[0].fcTp;
             console.log('New data system:', rawData[0].fcTp);
         } else {
@@ -36,6 +35,7 @@ export async function earthquake_emergency() {
     } catch (error) {
         console.error(`Error in earthquake_emergency: ${error}`);
         return 0;
+        data_system = 0;
     }
 }
 
