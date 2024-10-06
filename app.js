@@ -35,22 +35,6 @@ app.get('/', (req, res) => {
 
 
 
-client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isCommand()) return;
-
-  const { commandName } = interaction;
-
-  if (commandName === 'ping') {
-    const sent = await interaction.reply({ content: 'Pong!', fetchReply: true });
-
-    const ping = sent.createdTimestamp - interaction.createdTimestamp; 
-    const apiLatency = Math.round(client.ws.ping); 
-
-    await interaction.editReply(`Pong! 명령어 처리 시간: ${ping}ms, API 지연 시간: ${apiLatency}ms`);
-  }
-});
-
-
 function getEarthquakeMessage(data_system) {
   let title, description, color_x;
 
@@ -214,27 +198,35 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
   if (type === InteractionType.PING) {
     console.log("pong");
     return res.send({ type: InteractionResponseType.PONG });
+    
+    const sent = await interaction.reply({ content: 'Pong!', fetchReply: true });
+
+    const ping = sent.createdTimestamp - interaction.createdTimestamp; 
+    const apiLatency = Math.round(client.ws.ping); 
+
+    await interaction.editReply(`Pong! 명령어 처리 시간: ${ping}ms, API 지연 시간: ${apiLatency}ms`);
   }
-  if(type === InteractionType.set
-  client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isCommand()) return;
+  if(type === InteractionType.commands_channel){
+    client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isCommand()) return;
+  
+    const { commandName, options } = interaction;
 
-  const { commandName, options } = interaction;
+    if (commandName === 'setchannel') {
+      const channel = options.getChannel('channel');
+      const selectedChannelId = channel.id;
 
-  if (commandName === 'setchannel') {
-    const channel = options.getChannel('channel');
-    const selectedChannelId = channel.id;
+      await interaction.reply(`자동 메시지를 보낼 채널이 ${channel.name}(으)로 설정되었습니다.`);
 
-    await interaction.reply(`자동 메시지를 보낼 채널이 ${channel.name}(으)로 설정되었습니다.`);
-
-    const selectedChannel = client.channels.cache.get(selectedChannelId);
-    if (selectedChannel) {
-      selectedChannel.send('이 채널로 자동 메시지가 설정되었습니다.');
-    } else {
-      console.error('채널을 찾을 수 없습니다.');
+      const selectedChannel = client.channels.cache.get(selectedChannelId);
+      if (selectedChannel) {
+        selectedChannel.send('이 채널로 자동 메시지가 설정되었습니다.');
+      } else {
+        console.error('채널을 찾을 수 없습니다.');
+      }
     }
+  });
   }
-});
 });
 
  
