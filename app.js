@@ -98,7 +98,6 @@ async function handleEarthquakeUpdate() {
     }
 
     if (['2', '3', '5', '11', '12', '13', '14'].includes(data_system)) {
-      data_system_1 = data_system;
       same = 0;
 
       let title = '[정보]';
