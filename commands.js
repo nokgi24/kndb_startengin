@@ -12,6 +12,12 @@ const ping_command = {
   type: 1,
 };
 
+const check_channel = {
+  name: 'channel',
+  description: 'check_channel',
+  type: 1,
+};
+
 const commands_channel = [
   {
     name: 'setchannel',
@@ -43,7 +49,7 @@ export const registerCommands = async (client) => {
     console.error(error);
   }
 };
-const ALL_COMMANDS = [ping_command, ...commands_channel];
+const ALL_COMMANDS = [ check_channel, ping_command, ...commands_channel];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
 
