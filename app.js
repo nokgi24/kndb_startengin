@@ -13,7 +13,6 @@ import { registerCommands } from './commands.js';
 
 const app = express();
 const PORT = process.env.PORT || 4030;
-let data_system_1 = 0;
 let same = 0;
 let selectedChannelId = null;
 const guildChannelMap = {};
