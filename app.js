@@ -16,6 +16,8 @@ const PORT = process.env.PORT || 4030;
 let data_system_1 = 0;
 let same = 0;
 let selectedChannelId = null;
+const guildChannelMap = {};
+
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -193,7 +195,7 @@ async function handleEarthquakeUpdate() {
 setInterval(handleEarthquakeUpdate, 10000);
 
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (req, res) => {
-  const { type, data, id } = req.body;
+  const { type, data, guild_id } = req.body;
 
   if (type === InteractionType.PING) {
     return res.send({ type: InteractionResponseType.PONG });
@@ -213,25 +215,40 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
     }
 
     if (commandName === 'setchannel') {
-      const channel = options.find(option => option.name === 'channel').value;
-      selectedChannelId = channel;
+      const channelId = options.find(option => option.name === 'channel').value;
+      guildChannelMap[guild_id] = channelId;
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `자동 메시지를 보낼 채널이 <#${selectedChannelId}>(으)로 설정되었습니다.`
+          content: `자동 메시지를 보낼 채널이 <#${channelId}>로 설정되었습니다.`
         }
       });
     }
-     if (commandName === 'channel') {
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: `현재 설정된 채널은 <#${selectedChannelId}> 입니다. `
-        }
-      });
+
+    if (commandName === 'channel') {
+      const selectedChannelId = guildChannelMap[guild_id];
+
+      if (selectedChannelId) {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `현재 설정된 채널은 <#${selectedChannelId}> 입니다.`
+          }
+        });
+      } else {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: '현재 설정된 채널이 없습니다. 먼저 /setchannel 명령어로 채널을 설정하세요.'
+          }
+        });
+      }
     }
   }
+
+  res.sendStatus(404);
+});
 
   res.sendStatus(404);
 });
