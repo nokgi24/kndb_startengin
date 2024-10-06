@@ -192,43 +192,36 @@ async function handleEarthquakeUpdate() {
 
 setInterval(handleEarthquakeUpdate, 10000);
 
-app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (req, res) => {
-  const { type, data } = req.body;
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isCommand()) return;
 
-  if (type === InteractionType.PING) {
-    console.log("pong");
-    return res.send({ type: InteractionResponseType.PONG });
-    
+  const { commandName, options } = interaction;
+
+  // /ping 명령어 처리
+  if (commandName === 'ping') {
     const sent = await interaction.reply({ content: 'Pong!', fetchReply: true });
 
-    const ping = sent.createdTimestamp - interaction.createdTimestamp; 
-    const apiLatency = Math.round(client.ws.ping); 
+    const ping = sent.createdTimestamp - interaction.createdTimestamp; // 명령어 처리 시간
+    const apiLatency = Math.round(client.ws.ping); // WebSocket 지연 시간
 
     await interaction.editReply(`Pong! 명령어 처리 시간: ${ping}ms, API 지연 시간: ${apiLatency}ms`);
   }
-  if(type === InteractionType.commands_channel){
-    client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isCommand()) return;
-  
-    const { commandName, options } = interaction;
 
-    if (commandName === 'setchannel') {
-      const channel = options.getChannel('channel');
-      const selectedChannelId = channel.id;
+  // /setchannel 명령어 처리
+  if (commandName === 'setchannel') {
+    const channel = options.getChannel('channel');
+    const selectedChannelId = channel.id;
 
-      await interaction.reply(`자동 메시지를 보낼 채널이 ${channel.name}(으)로 설정되었습니다.`);
+    await interaction.reply(`자동 메시지를 보낼 채널이 ${channel.name}(으)로 설정되었습니다.`);
 
-      const selectedChannel = client.channels.cache.get(selectedChannelId);
-      if (selectedChannel) {
-        selectedChannel.send('이 채널로 자동 메시지가 설정되었습니다.');
-      } else {
-        console.error('채널을 찾을 수 없습니다.');
-      }
+    const selectedChannel = client.channels.cache.get(selectedChannelId);
+    if (selectedChannel) {
+      selectedChannel.send('이 채널로 자동 메시지가 설정되었습니다.');
+    } else {
+      console.error('채널을 찾을 수 없습니다.');
     }
-  });
   }
 });
-
  
 
 
