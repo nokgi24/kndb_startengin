@@ -167,7 +167,7 @@ async function handleEarthquakeUpdate() {
                 {
                   title: title,
                   description: description,
-                  fields: [], // 오류 시 필드 없음
+                  fields: [], 
                   timestamp: new Date(),
                   color: color_x,
                   footer: {
@@ -195,16 +195,13 @@ setInterval(handleEarthquakeUpdate, 10000);
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (req, res) => {
   const { type, data, id } = req.body;
 
-  // PING 상호작용 처리
   if (type === InteractionType.PING) {
     return res.send({ type: InteractionResponseType.PONG });
   }
 
-  // 명령어 상호작용 처리
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name: commandName, options } = data;
 
-    // /ping 명령어 처리
     if (commandName === 'ping') {
       const apiLatency = Math.round(client.ws.ping);
       return res.send({
@@ -215,7 +212,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
       });
     }
 
-    // /setchannel 명령어 처리
     if (commandName === 'setchannel') {
       const channel = options.find(option => option.name === 'channel').value;
       const selectedChannelId = channel;
@@ -229,7 +225,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
     }
   }
 
-  // 기본 응답 (명령어 또는 핑 이외의 경우)
   res.sendStatus(404);
 });
 
