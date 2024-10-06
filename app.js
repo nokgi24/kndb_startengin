@@ -52,6 +52,23 @@ client.on(Events.InteractionCreate, async interaction => {
     }
   }
 });
+
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isCommand()) return;
+
+  const { commandName } = interaction;
+
+  if (commandName === 'ping') {
+    const sent = await interaction.reply({ content: 'Pong!', fetchReply: true });
+
+    const ping = sent.createdTimestamp - interaction.createdTimestamp; 
+    const apiLatency = Math.round(client.ws.ping); 
+
+    await interaction.editReply(`Pong! 명령어 처리 시간: ${ping}ms, API 지연 시간: ${apiLatency}ms`);
+  }
+});
+
+
 function getEarthquakeMessage(data_system) {
   let title, description, color_x;
 
