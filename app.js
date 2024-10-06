@@ -223,6 +223,14 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
         }
       });
     }
+     if (commandName === 'channel') {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `현재 설정된 채널은 <#${selectedChannelId}> 입니다. `
+        }
+      });
+    }
   }
 
   res.sendStatus(404);
