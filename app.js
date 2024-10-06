@@ -192,35 +192,46 @@ async function handleEarthquakeUpdate() {
 
 setInterval(handleEarthquakeUpdate, 10000);
 
-client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isCommand()) return;
+app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (req, res) => {
+  const { type, data, id } = req.body;
 
-  const { commandName, options } = interaction;
-
-  if (commandName === 'ping') {
-    const sent = await interaction.reply({ content: 'Pong!', fetchReply: true });
-
-    const ping = sent.createdTimestamp - interaction.createdTimestamp; // 명령어 처리 시간
-    const apiLatency = Math.round(client.ws.ping); // WebSocket 지연 시간
-
-    await interaction.editReply(`Pong! 명령어 처리 시간: ${ping}ms, API 지연 시간: ${apiLatency}ms`);
+  // PING 상호작용 처리
+  if (type === InteractionType.PING) {
+    return res.send({ type: InteractionResponseType.PONG });
   }
 
-  if (commandName === 'setchannel') {
-    const channel = options.getChannel('channel');
-    const selectedChannelId = channel.id;
+  // 명령어 상호작용 처리
+  if (type === InteractionType.APPLICATION_COMMAND) {
+    const { name: commandName, options } = data;
 
-    await interaction.reply(`자동 메시지를 보낼 채널이 ${channel.name}(으)로 설정되었습니다.`);
+    // /ping 명령어 처리
+    if (commandName === 'ping') {
+      const apiLatency = Math.round(client.ws.ping);
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `Pong! API 지연 시간: ${apiLatency}ms`
+        }
+      });
+    }
 
-    const selectedChannel = client.channels.cache.get(selectedChannelId);
-    if (selectedChannel) {
-      selectedChannel.send('이 채널로 자동 메시지가 설정되었습니다.');
-    } else {
-      console.error('채널을 찾을 수 없습니다.');
+    // /setchannel 명령어 처리
+    if (commandName === 'setchannel') {
+      const channel = options.find(option => option.name === 'channel').value;
+      const selectedChannelId = channel;
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `자동 메시지를 보낼 채널이 <#${selectedChannelId}>(으)로 설정되었습니다.`
+        }
+      });
     }
   }
+
+  // 기본 응답 (명령어 또는 핑 이외의 경우)
+  res.sendStatus(404);
 });
- 
 
 
     
