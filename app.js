@@ -129,8 +129,8 @@ async function handleEarthquakeUpdate() {
           fields.splice(1, 0, { name: '최대 측정 진도', value: inT, inline: true });
         }
 
-        if (selectedChannelId) {
-          const channel = client.channels.cache.get(selectedChannelId);
+       for (const [guildId, channelId] of Object.entries(guildChannelMap)) {
+          const channel = client.channels.cache.get(channelId);
           if (channel) {
             await channel.send({
               embeds: [
@@ -150,10 +150,8 @@ async function handleEarthquakeUpdate() {
               ]
             });
           } else {
-            console.error('지정된 채널을 찾을 수 없습니다.');
+            console.error(`지정된 채널을 찾을 수 없습니다. (Guild: ${guildId})`);
           }
-        } else {
-          console.log('채널이 지정되지 않았습니다.');
         }
       } catch (error) {
         console.error('Error processing earthquake data:', error);
@@ -161,15 +159,15 @@ async function handleEarthquakeUpdate() {
         description = "지진 정보 처리 중 오류가 발생했습니다.";
         color_x = 0xff0000;
 
-        if (selectedChannelId) {
-          const channel = client.channels.cache.get(selectedChannelId);
+        for (const [guildId, channelId] of Object.entries(guildChannelMap)) {
+          const channel = client.channels.cache.get(channelId);
           if (channel) {
             await channel.send({
               embeds: [
                 {
                   title: title,
                   description: description,
-                  fields: [], 
+                  fields: [],
                   timestamp: new Date(),
                   color: color_x,
                   footer: {
@@ -178,8 +176,6 @@ async function handleEarthquakeUpdate() {
                 }
               ]
             });
-          } else {
-            console.error('지정된 채널을 찾을 수 없습니다.');
           }
         }
       }
@@ -189,7 +185,6 @@ async function handleEarthquakeUpdate() {
   } catch (error) {
     console.error('Error updating earthquake information:', error);
   }
-  console.log("datasystem_1:", data_system_1);
 }
 
 setInterval(handleEarthquakeUpdate, 10000);
@@ -250,8 +245,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
   res.sendStatus(404);
 });
 
-  res.sendStatus(404);
-});
 
 
     
