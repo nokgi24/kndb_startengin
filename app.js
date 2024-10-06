@@ -214,7 +214,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
 
     if (commandName === 'setchannel') {
       const channel = options.find(option => option.name === 'channel').value;
-      const selectedChannelId = channel;
+      selectedChannelId = channel;
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
