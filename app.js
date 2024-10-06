@@ -197,7 +197,6 @@ client.on(Events.InteractionCreate, async interaction => {
 
   const { commandName, options } = interaction;
 
-  // /ping 명령어 처리
   if (commandName === 'ping') {
     const sent = await interaction.reply({ content: 'Pong!', fetchReply: true });
 
@@ -207,7 +206,6 @@ client.on(Events.InteractionCreate, async interaction => {
     await interaction.editReply(`Pong! 명령어 처리 시간: ${ping}ms, API 지연 시간: ${apiLatency}ms`);
   }
 
-  // /setchannel 명령어 처리
   if (commandName === 'setchannel') {
     const channel = options.getChannel('channel');
     const selectedChannelId = channel.id;
