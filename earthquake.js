@@ -25,7 +25,6 @@ export function fetchEarthquakeData() {
     const pastTime = formatDateForAPI(new Date(getPastTimeISOString(3))); 
 
     const requestUrl = `http://apis.data.go.kr/1360000/EqkInfoService/getEqkMsg?serviceKey=${serviceKey}&numOfRows=${numOfRows}&pageNo=${pageNo}&fromTmFc=${pastTime}&toTmFc=${currentTime}&dataType=XML`;
-    console.log('Services_key:', process.env.Services_key);
 
 
     return new Promise((resolve, reject) => {
