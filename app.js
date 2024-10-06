@@ -33,25 +33,7 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isCommand()) return;
 
-  const { commandName, options } = interaction;
-
-  if (commandName === 'setchannel') {
-    const channel = options.getChannel('channel');
-    const selectedChannelId = channel.id;
-
-    await interaction.reply(`자동 메시지를 보낼 채널이 ${channel.name}(으)로 설정되었습니다.`);
-
-    const selectedChannel = client.channels.cache.get(selectedChannelId);
-    if (selectedChannel) {
-      selectedChannel.send('이 채널로 자동 메시지가 설정되었습니다.');
-    } else {
-      console.error('채널을 찾을 수 없습니다.');
-    }
-  }
-});
 
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isCommand()) return;
@@ -233,6 +215,26 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
     console.log("pong");
     return res.send({ type: InteractionResponseType.PONG });
   }
+  if(type === InteractionType.set
+  client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isCommand()) return;
+
+  const { commandName, options } = interaction;
+
+  if (commandName === 'setchannel') {
+    const channel = options.getChannel('channel');
+    const selectedChannelId = channel.id;
+
+    await interaction.reply(`자동 메시지를 보낼 채널이 ${channel.name}(으)로 설정되었습니다.`);
+
+    const selectedChannel = client.channels.cache.get(selectedChannelId);
+    if (selectedChannel) {
+      selectedChannel.send('이 채널로 자동 메시지가 설정되었습니다.');
+    } else {
+      console.error('채널을 찾을 수 없습니다.');
+    }
+  }
+});
 });
 
  
