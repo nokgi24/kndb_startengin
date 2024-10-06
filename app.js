@@ -42,10 +42,8 @@ client.on(Events.InteractionCreate, async interaction => {
     const channel = options.getChannel('channel');
     const selectedChannelId = channel.id;
 
-    // 명령어를 실행한 사용자에게 답장
     await interaction.reply(`자동 메시지를 보낼 채널이 ${channel.name}(으)로 설정되었습니다.`);
 
-    // 설정된 채널에 메시지 한 번 보내기
     const selectedChannel = client.channels.cache.get(selectedChannelId);
     if (selectedChannel) {
       selectedChannel.send('이 채널로 자동 메시지가 설정되었습니다.');
