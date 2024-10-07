@@ -67,7 +67,7 @@ function getEarthquakeMessage(data_system) {
       break;
     case '13':
       title = '[조기경보 정밀분석]';
-      description = '조기경보 정밀분석 정보입니다. 지진 발생 가능성에 유의하세요.';
+      description = '조기경보 정밀분석 정보입니다. 여진 발생 가능성에 유의하세요.';
       color_x = 0xece632;
       break;
     case '14':
