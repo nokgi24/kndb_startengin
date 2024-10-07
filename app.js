@@ -185,7 +185,7 @@ async function handleEarthquakeUpdate() {
   }
 }
 
-setInterval(handleEarthquakeUpdate, 10000);
+setInterval(handleEarthquakeUpdate, 1000);
 
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (req, res) => {
   const { type, data, guild_id } = req.body;
