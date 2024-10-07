@@ -34,7 +34,6 @@ export function fetchEarthquakeData() {
                 return reject(err);
             }
 
-            console.log(`API Response Status Code: ${res.statusCode}`);
 
             if (res.statusCode === 200) {
                 try {
