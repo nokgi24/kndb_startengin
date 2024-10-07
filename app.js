@@ -57,7 +57,7 @@ function getEarthquakeMessage(data_system) {
       break;
     case '11':
       title = '[국내지진조기경보]';
-      description = '국내 지진조기경보가 발표되었습니다. 해당지역에서는 강한 흔들림에 주의하시기 바랍니다.';
+      description = '지진조기경보가 활성화되었습니다. 강한 흔들림에 주의하시기 바랍니다. (본정보는 속도가 빠른 P파 만을 이용해서 생성되었습니다. 추후 속보에 유의 바랍니다.)';
       color_x = 0xfd2b2b;
       break;
     case '12':
