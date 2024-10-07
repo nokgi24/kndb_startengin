@@ -44,7 +44,6 @@ export function fetchEarthquakeData() {
                         const transformedData = transformEarthquakeData(parsedData);
                         resolve(transformedData);
                     } else {
-                        console.log("현재 지진 정보가 없습니다.");
                         resolve([]); 
                     }
                 } catch (parseError) {
