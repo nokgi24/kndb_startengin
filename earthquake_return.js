@@ -28,7 +28,7 @@ export async function earthquake_emergency() {
             console.log('New data system:', data_system);
             return 1;
         } else {
-            console.error('Unexpected data format or missing fcTp:', rawData[0].fcTp);
+            console.error('Unexpected data format or missing fcTp:', rawData);
             data_system = 0; 
             return 0; 
         }
