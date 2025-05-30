@@ -234,11 +234,8 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
       const channelId = options.find(option => option.name === 'channel').value;
 
       await supabase
-        .from('KNDB_DATA')
-        .upsert(
-          { guild_id, channel_id: channelId },
-          { onConflict: 'guild_id' }
-        );
+        .from('kndb_data')
+        .upsert([{ guild_id, channel_id: channelId }]);
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -249,17 +246,17 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
     }
 
     if (commandName === 'channel') {
-      const { data: row } = await supabase
-        .from('KNDB_DATA')
+      const { data: result } = await supabase
+        .from('kndb_data')
         .select('channel_id')
         .eq('guild_id', guild_id)
         .single();
 
-      if (row?.channel_id) {
+      if (result?.channel_id) {
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: `현재 설정된 채널은 <#${row.channel_id}> 입니다.`
+            content: `현재 설정된 채널은 <#${result.channel_id}> 입니다.`
           }
         });
       } else {
@@ -275,7 +272,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
 
   res.sendStatus(404);
 });
-
 
 
     
