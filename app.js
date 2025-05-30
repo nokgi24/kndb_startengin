@@ -10,6 +10,7 @@ import { earthquake_emergency, data_system } from './earthquake_return.js';
 import { Client, Events, GatewayIntentBits } from 'discord.js'; 
 import { fetchEarthquakeData } from './earthquake.js';
 import { registerCommands } from './commands.js';
+import moment from "moment";
 
 const app = express();
 const PORT = process.env.PORT || 4030;
@@ -84,17 +85,25 @@ function getEarthquakeMessage(data_system) {
 
   return { title, description, color_x };
 }
-
 async function handleEarthquakeUpdate() {
   try {
     console.log('Updating earthquake information...');
-    await earthquake_emergency();
-    const transformedData = await fetchEarthquakeData();
-
+    if(await earthquake_emergency()){
+      const transformedData = await fetchEarthquakeData();
+    }
     if (!transformedData || transformedData.length === 0) {
       console.log('현재 지진 정보가 없습니다.');
       return; 
+    }else{
+      handleEarthquakeUpdate_12();
     }
+    } catch (error) {
+    console.error('Error updating earthquake information:', error);
+  }
+};
+
+async function handleEarthquakeUpdate_12() {
+  
 
     if (['2', '3', '5', '11', '12', '13', '14'].includes(data_system)) {
       same = 0;
@@ -107,18 +116,34 @@ async function handleEarthquakeUpdate() {
         const { title: msgTitle, description: msgDescription, color_x: msgColor } = getEarthquakeMessage(data_system);
         title = msgTitle || title; 
         description = msgDescription || description; 
-        color_x = msgColor || color_x; 
+        color_x = msgColor || color_x;
 
+        function formatDateTime(str) {
+          if (!/^\d{12}$/.test(str)) {
+            throw new Error("형식이 잘못되었습니다. 12자리 숫자여야 합니다.");
+          }
+
+          const year = str.slice(0, 4);
+          const month = str.slice(4, 6);
+          const day = str.slice(6, 8);
+          const hour = str.slice(8, 10);
+          const minute = str.slice(10, 12);
+
+          return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
+        }
+        function formatdep(str){
+          const Dep_Km= str + 'KM';
+          return Dep_Km;
+        }
         const mt = transformedData[0].mt || '정보 없음';
         const inT = transformedData[0].inT || '정보 없음';
-        const dep = transformedData[0].dep || '정보 없음';
-        const tmFc = transformedData[0].tmFc || '정보 없음';
+        const dep = formatdep(transformedData[0].dep) || '정보 없음';
+        const tmFc = formatDateTime(transformedData[0].tmFc) || '정보 없음';
         const loc = transformedData[0].loc || '정보 없음';
         const img = transformedData[0].img || 'https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_1280.jpg';
-
         const fields = [
           { name: 'M', value: mt, inline: true },
-          { name: '깊이', value: dep, inline: true },
+          { name: '깊이', value: dep , inline: true },
           { name: '발표시각', value: tmFc, inline: true },
           { name: '위치', value: loc, inline: true }
         ];
@@ -180,9 +205,7 @@ async function handleEarthquakeUpdate() {
     } else {
       console.log('현재 지진 정보가 없습니다.');
     }
-  } catch (error) {
-    console.error('Error updating earthquake information:', error);
-  }
+  
 }
 
 setInterval(handleEarthquakeUpdate, 1000);
