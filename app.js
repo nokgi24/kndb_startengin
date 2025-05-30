@@ -20,7 +20,7 @@ const guildChannelMap = {};
 
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-
+console.log("토큰 길이:", process.env.DISCORD_TOKEN?.length);
 client.once(Events.ClientReady, async (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
   await registerCommands(readyClient); 
