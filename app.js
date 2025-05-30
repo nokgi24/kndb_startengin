@@ -13,7 +13,7 @@ import { registerCommands } from './commands.js';
 import moment from "moment";
 
 const app = express();
-const PORT = process.env.PORT || 4030;
+const PORT = process.env.PORT;
 let same = 0;
 let selectedChannelId = null;
 const guildChannelMap = {};
