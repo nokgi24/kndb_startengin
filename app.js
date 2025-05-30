@@ -19,6 +19,7 @@ const PORT = process.env.PORT;
 let same = 0;
 let selectedChannelId = null;
 const guildChannelMap = {};
+let transformedData = 0;
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 console.log("토큰 길이:", process.env.DISCORD_TOKEN?.length);
@@ -86,7 +87,6 @@ function getEarthquakeMessage(data_system) {
 }
 async function handleEarthquakeUpdate() {
   try {
-    let transformedData = 0;
     console.log('Updating earthquake information...');
     if(await earthquake_emergency()){
        transformedData = await fetchEarthquakeData();
