@@ -60,7 +60,6 @@ export function fetchEarthquakeData() {
 
 fetchEarthquakeData().then(data => {
     if (data.length > 0) {
-        console.log('Earthquake data:', data);
     } else {
         console.log('No earthquake data available.');
     }
