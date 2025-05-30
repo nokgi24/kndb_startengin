@@ -12,13 +12,13 @@ import { fetchEarthquakeData } from './earthquake.js';
 import { registerCommands } from './commands.js';
 import moment from "moment";
 import { saveChannelSetting, getChannelSetting } from './supabaseHelpers.js';
+import { supabase } from './supabaseClient.js';
 
 const app = express();
 const PORT = process.env.PORT;
 let same = 0;
 let selectedChannelId = null;
 const guildChannelMap = {};
-
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 console.log("토큰 길이:", process.env.DISCORD_TOKEN?.length);
