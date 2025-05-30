@@ -11,6 +11,7 @@ import { Client, Events, GatewayIntentBits } from 'discord.js';
 import { fetchEarthquakeData } from './earthquake.js';
 import { registerCommands } from './commands.js';
 import moment from "moment";
+import { saveChannelSetting, getChannelSetting } from './supabaseHelpers.js';
 
 const app = express();
 const PORT = process.env.PORT;
@@ -231,7 +232,13 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
 
     if (commandName === 'setchannel') {
       const channelId = options.find(option => option.name === 'channel').value;
-      guildChannelMap[guild_id] = channelId;
+
+      await supabase
+        .from('KNDB_DATA')
+        .upsert(
+          { guild_id, channel_id: channelId },
+          { onConflict: 'guild_id' }
+        );
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -242,13 +249,17 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async (re
     }
 
     if (commandName === 'channel') {
-      const selectedChannelId = guildChannelMap[guild_id];
+      const { data: row } = await supabase
+        .from('KNDB_DATA')
+        .select('channel_id')
+        .eq('guild_id', guild_id)
+        .single();
 
-      if (selectedChannelId) {
+      if (row?.channel_id) {
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: `현재 설정된 채널은 <#${selectedChannelId}> 입니다.`
+            content: `현재 설정된 채널은 <#${row.channel_id}> 입니다.`
           }
         });
       } else {
