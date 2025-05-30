@@ -94,9 +94,9 @@ async function handleEarthquakeUpdate() {
     if (!transformedData || transformedData.length == 0) {
       console.log('현재 지진 정보가 없습니다.');
       return; 
-    }else{
-      handleEarthquakeUpdate_12();
-    }
+    } 
+    handleEarthquakeUpdate_12();
+    
     } catch (error) {
     console.error('Error updating earthquake information:', error);
   }
@@ -104,14 +104,13 @@ async function handleEarthquakeUpdate() {
 
 async function handleEarthquakeUpdate_12() {
   
-
     if (['2', '3', '5', '11', '12', '13', '14'].includes(data_system)) {
       same = 0;
 
       let title = '[정보]';
       let description = '지진 정보가 업데이트되었습니다.';
       let color_x = 0x00ff00; // 기본값 설정
-
+      console.log(description);
       try {
         const { title: msgTitle, description: msgDescription, color_x: msgColor } = getEarthquakeMessage(data_system);
         title = msgTitle || title; 
