@@ -85,11 +85,12 @@ function getEarthquakeMessage(data_system) {
 }
 async function handleEarthquakeUpdate() {
   try {
+    const transformedData = 0;
     console.log('Updating earthquake information...');
     if(await earthquake_emergency()){
-      const transformedData = await fetchEarthquakeData();
+       transformedData = await fetchEarthquakeData();
     }
-    if (!transformedData || transformedData.length === 0) {
+    if (!transformedData || transformedData.length == 0) {
       console.log('현재 지진 정보가 없습니다.');
       return; 
     }else{
