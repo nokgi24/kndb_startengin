@@ -21,11 +21,23 @@ let selectedChannelId = null;
 const guildChannelMap = {};
 let transformedData = 0;
 
+async function loadChannelSettings() {
+  const { data, error } = await supabase.from('kndb_data').select('guild_id, channel_id');
+  if (error) {
+    console.error('DB에서 채널 설정을 불러오는 중 오류:', error);
+    return;
+  }
+  data.forEach(({ guild_id, channel_id }) => {
+    guildChannelMap[guild_id] = channel_id;
+  });
+  console.log('채널 설정 로드 완료:', guildChannelMap);
+}
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-console.log("토큰 길이:", process.env.DISCORD_TOKEN?.length);
 client.once(Events.ClientReady, async (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-  await registerCommands(readyClient); 
+  await registerCommands(readyClient);
+  await loadChannelSettings();
 });
 
 client.login(process.env.DISCORD_TOKEN);
